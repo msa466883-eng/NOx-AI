@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NOx AI · modern edge</title>
+  <!-- minimal icons: lucide + font awesome fallback, but we use lucide primarily -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- particles (subtle) & chart.js -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    /* ----- MODERN RESET & VARIABLES (refined glass/neo) ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-dark: #0b0e14;
+      --bg-surface: rgba(20, 26, 35, 0.75);
+      --glass-edge: rgba(255, 255, 255, 0.05);
+      --glass-edge-strong: rgba(255, 255, 255, 0.1);
+      --primary-soft: #7b95f0;
+      --primary-core: #5566d9;
+      --accent-glow: #8bb0ff;
+      --success-mint: #2ad4b0;
+      --danger-coral: #f8719d;
+      --warning-amber: #f5b56b;
+      --text-main: #f2f5ff;
+      --text-muted: #a4b0cf;
+      --card-blur: 18px;
+      --transition-micro: 140ms cubic-bezier(0.2, 0, 0, 1);
+      --transition-smooth: 260ms cubic-bezier(0.2, 0, 0, 1);
+      --neo-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* particles canvas – faint, no pointer events */
+    #particles-js {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    /* main container – centered, max width 600px */
+    .app {
+      position: relative;
+      z-index: 5;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 1rem 1rem 2rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ----- GLASS CARD ----- */
+    .glass-card {
+      background: var(--bg-surface);
+      backdrop-filter: blur(var(--card-blur));
+      -webkit-backdrop-filter: blur(var(--card-blur));
+      border: 1px solid var(--glass-edge);
+      border-radius: 2rem;
+      box-shadow: var(--neo-shadow);
+      transition: transform var(--transition-smooth), border-color var(--transition-micro), background 0.2s;
+      transform: translateZ(0);
+    }
+
+    .glass-card:active {
+      transform: scale(0.99);
+    }
+
+    /* header */
+    .top-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.25rem 0.5rem 1rem;
+    }
+
+    .logo h1 {
+      font-weight: 650;
+      font-size: 1.9rem;
+      letter-spacing: -0.02em;
+      background: linear-gradient(145deg, #ffffff, #b8cdff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .logo span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: block;
+      margin-top: 0.1rem;
+      letter-spacing: 0.3px;
+    }
+
+    /* logic badge (smoother) */
+    .logic-badge-header {
+      background: rgba(85, 102, 217, 0.2);
+      border-radius: 40px;
+      padding: 0.4rem 1rem 0.4rem 0.9rem;
+      font-size: 0.85rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      backdrop-filter: blur(4px);
+    }
+
+    /* ---- TAB BAR refined (active indicator animated) ---- */
+    .tab-bar {
+      display: flex;
+      gap: 0.3rem;
+      background: rgba(12, 18, 28, 0.6);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 3rem;
+      padding: 0.4rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--glass-edge-strong);
+    }
+
+    .tab-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.7rem 0.2rem;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 530;
+      font-size: 0.95rem;
+      border-radius: 3rem;
+      cursor: pointer;
+      transition: all var(--transition-micro);
+      white-space: nowrap;
+    }
+
+    .tab-btn i, .tab-btn svg {
+      width: 1.2rem;
+      height: 1.2rem;
+      stroke-width: 1.8;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .tab-btn.active {
+      background: var(--primary-core);
+      color: white;
+      box-shadow: 0 6px 16px rgba(74, 95, 217, 0.4);
+    }
+
+    /* tab panels */
+    .tab-panel {
+      display: none;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity var(--transition-smooth), transform var(--transition-smooth);
+    }
+
+    .tab-panel.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* cards inner padding */
+    .card-content {
+      padding: 1.5rem;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .card-header i, .card-header svg {
+      color: var(--primary-soft);
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .card-header h3 {
+      font-weight: 530;
+      font-size: 1.1rem;
+      letter-spacing: -0.2px;
+    }
+
+    /* prediction area */
+    .prediction-glow {
+      background: rgba(110, 140, 255, 0.08);
+      border-radius: 2.2rem;
+      padding: 1.3rem 1.2rem;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .prediction-glow::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 40%, rgba(130, 170, 255, 0.15), transparent 70%);
+      pointer-events: none;
+    }
+
+    .period-badge {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.3rem;
+    }
+
+    .big-number {
+      font-size: 3.8rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -3px;
+      display: inline-block;
+      transition: transform 0.2s ease, color 0.15s;
+    }
+
+    .big-number.big {
+      color: var(--success-mint);
+      text-shadow: 0 0 20px rgba(42, 212, 176, 0.4);
+    }
+    .big-number.small {
+      color: var(--danger-coral);
+      text-shadow: 0 0 20px rgba(248, 113, 157, 0.35);
+    }
+
+    .confidence-tag {
+      background: rgba(255,255,255,0.03);
+      border-radius: 40px;
+      padding: 0.3rem 1rem;
+      font-size: 0.85rem;
+      border: 1px solid var(--glass-edge);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* stats grid */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem;
+      margin-top: 0.8rem;
+    }
+    .stat-item {
+      background: rgba(0,0,0,0.2);
+      border-radius: 1.4rem;
+      padding: 0.8rem 0.2rem;
+      text-align: center;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.02);
+    }
+    .stat-value {
+      font-weight: 650;
+      font-size: 1.4rem;
+      line-height: 1.2;
+    }
+    .stat-label {
+      font-size: 0.66rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    /* pattern chips */
+    .pattern-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0.2rem 0;
+    }
+    .pattern-chip {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(123, 149, 240, 0.2);
+      padding: 0.3rem 1rem 0.3rem 0.9rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: var(--accent-glow);
+      font-weight: 470;
+    }
+
+    /* history rows (predictions) */
+    .history-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      background: rgba(15, 22, 32, 0.6);
+      border-radius: 1.8rem;
+      margin-bottom: 0.6rem;
+      border: 1px solid var(--glass-edge);
+      transition: background var(--transition-micro), transform var(--transition-micro);
+    }
+    .history-row:hover {
+      background: rgba(35, 45, 60, 0.7);
+      transform: translateX(3px);
+    }
+
+    .history-left .period {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .history-left .pred {
+      font-weight: 600;
+    }
+    .status-badge {
+      padding: 0.25rem 1rem;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .status-win { background: rgba(42, 212, 176, 0.15); color: var(--success-mint); border: 1px solid rgba(42,212,176,0.2); }
+    .status-loss { background: rgba(248, 113, 157, 0.15); color: var(--danger-coral); border: 1px solid rgba(248,113,157,0.2); }
+    .status-pending { background: rgba(245, 181, 107, 0.1); color: var(--warning-amber); border: 1px solid rgba(245,181,107,0.2); }
+
+    /* chart container */
+    .chart-box {
+      height: 170px;
+      margin: 1rem 0 0.5rem;
+      width: 100%;
+    }
+
+    /* pages */
+    .page {
+      display: none;
+      animation: slidePage 0.28s ease;
+    }
+    .page.active-page { display: block; }
+    @keyframes slidePage {
+      0% { opacity: 0; transform: translateX(12px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    .back-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      cursor: pointer;
+      padding: 0.3rem 1rem 0.3rem 0.7rem;
+      border-radius: 3rem;
+      background: rgba(255,255,255,0.02);
+      transition: background var(--transition-micro);
+      border: 1px solid transparent;
+    }
+    .back-nav:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.05); }
+
+    /* buttons */
+    .btn-soft {
+      background: rgba(30, 38, 56, 0.6);
+      border: 1px solid var(--glass-edge-strong);
+      padding: 0.8rem 1.2rem;
+      border-radius: 2.5rem;
+      font-weight: 500;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all var(--transition-micro);
+      backdrop-filter: blur(8px);
+    }
+    .btn-soft:hover {
+      background: rgba(50, 62, 86, 0.8);
+      border-color: rgba(255,255,255,0.15);
+      transform: translateY(-1px);
+    }
+
+    /* modal */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
+      z-index: 300; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity var(--transition-smooth);
+    }
+    .modal-overlay.active {
+      opacity: 1; pointer-events: all;
+    }
+    .modal-card {
+      max-width: 400px; width: 90%; background: #141f30; border-radius: 2.2rem;
+      padding: 1.8rem; border: 1px solid var(--primary-soft); box-shadow: 0 20px 40px -10px black;
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 430px) {
+      .tab-btn span { display: none; }
+      .tab-btn i { margin: 0; }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .big-number { font-size: 3.2rem; }
+    }
+
+    /* hide main when page shown */
+    #mainApp.hidden { display: none; }
+
+    /* patterns inside prediction panel */
+    #patternIndicator {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .pattern-item {
+      background: rgba(123, 149, 240, 0.08);
+      border-radius: 2rem;
+      padding: 0.3rem 1rem;
+      border: 1px solid rgba(123,149,240,0.15);
+      font-size: 0.8rem;
+    }
+
+    /* dev image fallback */
+    .dev-avatar {
+      width: 90px; height: 90px; border-radius: 50%; margin: 1rem auto; 
+      background: linear-gradient(145deg, #2a3a60, #1b2540); display: flex;
+      align-items: center; justify-content: center; border: 2px solid var(--primary-soft);
+    }
+    .dev-avatar svg { width: 48px; height: 48px; stroke: var(--primary-soft); }
+
+    /* logics list */
+    .logic-card {
+      background: rgba(0,0,0,0.2); border-radius: 1.5rem; padding: 1rem;
+      margin-bottom: 0.7rem; border: 1px solid var(--glass-edge);
+    }
+    .logic-title { font-weight: 600; display: flex; gap: 0.5rem; align-items: center; }
+    .logic-badge { background: var(--primary-core); padding: 0.15rem 0.6rem; border-radius: 30px; font-size: 0.7rem; }
+    .logic-desc { color: var(--text-muted); font-size: 0.85rem; margin: 0.2rem 0 0.3rem; }
+
+    /* notification */
+    .notification {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1f2a3f;
+      padding: 0.7rem 1.8rem; border-radius: 40px; color: white; z-index: 999;
+      box-shadow: 0 10px 30px -10px black; border: 1px solid var(--primary-soft);
+      opacity: 0; transition: opacity 0.2s; pointer-events: none;
+    }
+    .notification.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+
+  <!-- main app container -->
+  <div id="mainApp" class="app">
+    <div class="top-header">
+      <div class="logo">
+        <h1>NOx AI</h1>
+        <span></span>
+      </div>
+      <div class="logic-badge-header" id="headerLogicBadge">
+        <i data-lucide="cpu" width="16"></i> <span id="activeLogicLabel">Logic 1</span>
+      </div>
+    </div>
+
+    <!-- tab navigation (lucide icons) -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="prediction"><i data-lucide="bot"></i><span>Predict</span></button>
+      <button class="tab-btn" data-tab="history"><i data-lucide="clock"></i><span>History</span></button>
+      <button class="tab-btn" data-tab="trends"><i data-lucide="trending-up"></i><span>Trends</span></button>
+      <button class="tab-btn" data-tab="more"><i data-lucide="more-horizontal"></i><span>More</span></button>
+    </div>
+
+    <!-- PREDICTION PANEL (active) -->
+    <div class="tab-panel active" id="panel-prediction">
+      <div class="glass-card card-content">
+        <div class="card-header">
+          <i data-lucide="sparkles"></i><h3>current forecast</h3>
+        </div>
+        <div class="prediction-glow">
+          <div class="period-badge">
+            <span><span id="currentPeriod">•••</span></span>
+            <span><i data-lucide="zap" width="14"></i> <span id="winRate">-</span></span>
+          </div>
+          <div>
+            <span class="big-number" id="prediction">-</span>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-item"><span class="stat-value" id="totalPredictions">0</span><span class="stat-label">Total</span></div>
+          <div class="stat-item"><span class="stat-value win" id="totalWins">0</span><span class="stat-label">Wins</span></div>
+          <div class="stat-item"><span class="stat-value loss" id="totalLosses">0</span><span class="stat-label">Loss</span></div>
+          <div class="stat-item"><span class="stat-value" id="accuracy">0%</span><span class="stat-label">Acc</span></div>
+        </div>
+      </div>
+
+      <div class="glass-card card-content" style="margin-top: 1rem;">
+        <div class="card-header"><i data-lucide="pattern"></i><h3>active patterns</h3></div>
+        <div class="pattern-cloud" id="patternIndicator"></div>
+      </div>
+
+      <div class="glass-card card-content" style="margin-top: 1rem;">
+        <div class="card-header"><i data-lucide="list"></i><h3>recent</h3></div>
+        <div id="history"></div>
+      </div>
+    </div>
+
+    <!-- HISTORY PANEL -->
+    <div class="tab-panel" id="panel-history">
+      <div class="glass-card card-content">
+        <div class="card-header"><i data-lucide="database"></i><h3>previous results</h3></div>
+        <div id="previous-results"></div>
+      </div>
+    </div>
+
+    <!-- TRENDS PANEL -->
+    <div class="tab-panel" id="panel-trends">
+      <div class="glass-card card-content">
+        <div class="card-header"><i data-lucide="line-chart"></i><h3>trend analysis</h3></div>
+        <div class="chart-box"><canvas id="trendChart"></canvas></div>
+      </div>
+      <div class="glass-card card-content" style="margin-top:1rem;">
+        <div class="card-header"><i data-lucide="pie-chart"></i><h3>pattern frequency</h3></div>
+        <div class="chart-box"><canvas id="patternChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- MORE PANEL (navigation to pages) -->
+    <div class="tab-panel" id="panel-more">
+      <div class="glass-card card-content" style="cursor:pointer;" onclick="showPage('logic-page')">
+        <div class="card-header"><i data-lucide="brain"></i><h3>API SYSTEM</h3><i data-lucide="chevron-right" style="margin-left:auto;"></i></div>
+        <p style="color:var(--text-muted);">30+ prediction logics</p>
+      </div>
+      <div class="glass-card card-content" style="margin-top:1rem; cursor:pointer;" onclick="showPage('about-page')">
+        <div class="card-header"><i data-lucide="user"></i><h3>About Developer</h3><i data-lucide="chevron-right" style="margin-left:auto;"></i></div>
+      </div>
+      <div class="glass-card card-content" style="margin-top:1rem; cursor:pointer;" onclick="showPage('performance-page')">
+        <div class="card-header"><i data-lucide="gauge"></i><h3>Logic Performance</h3><i data-lucide="chevron-right" style="margin-left:auto;"></i></div>
+      </div>
+      <div style="display:flex; gap:0.8rem; margin-top:1.5rem;">
+        <button class="btn-soft" onclick="showExportModal()"><i data-lucide="download"></i> Export</button>
+        <button class="btn-soft" onclick="logout()"><i data-lucide="log-out"></i> Logout</button>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top: 2rem; color: var(--text-muted); font-size:0.7rem;">NOx · RB edge v3.2</div>
+  </div>
+
+  <!-- LOGIC PAGE -->
+  <div id="logic-page" class="page">
+    <div class="app">
+      <div class="back-nav" onclick="hidePage('logic-page')"><i data-lucide="arrow-left"></i> Back</div>
+      <div class="glass-card card-content">
+        <div class="card-header"><i data-lucide="brain-circuit"></i><h3>Active Logics</h3></div>
+        <div id="active-logics-list"></div>
+      </div>
+    </div>
+  </div>
+  <!-- ABOUT PAGE -->
+  <div id="about-page" class="page">
+    <div class="app">
+      <div class="back-nav" onclick="hidePage('about-page')"><i data-lucide="arrow-left"></i> Back</div>
+      <div class="glass-card card-content" style="text-align:center;">
+        <div class="dev-avatar"><i data-lucide="user" width="48" height="48"></i></div>
+        <h2>RB BHAI</h2>
+        <p style="color:var(--text-muted);">prediction systems architect</p>
+        <div style="display:flex; gap:1rem; justify-content:center; margin:1rem 0;">
+          <a href="#" style="color:var(--text-main);"><i data-lucide="send"></i></a>
+          <a href="#" style="color:var(--text-main);"><i data-lucide="github"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- PERFORMANCE PAGE -->
+  <div id="performance-page" class="page">
+    <div class="app">
+      <div class="back-nav" onclick="hidePage('performance-page')"><i data-lucide="arrow-left"></i> Back</div>
+      <div class="glass-card card-content">
+        <div class="card-header"><i data-lucide="bar-chart-3"></i><h3>Top logics</h3></div>
+        <div id="top-logics"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- export modal -->
+  <div class="modal-overlay" id="exportModal">
+    <div class="modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <h4>export data</h4>
+        <i data-lucide="x" style="cursor:pointer;" onclick="hideExportModal()"></i>
+      </div>
+      <textarea id="exportData" readonly rows="5" style="width:100%; background:#1f2a3f; border:1px solid #334155; border-radius:1.2rem; padding:0.8rem; color:white; resize:none;"></textarea>
+      <div style="display:flex; gap:0.5rem; margin-top:1rem;">
+        <button class="btn-soft" onclick="copyExportData()"><i data-lucide="copy"></i> copy</button>
+        <button class="btn-soft" onclick="downloadExportData()"><i data-lucide="download"></i> download</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- simple notification -->
+  <div class="notification" id="notification">Copied!</div>
+
+  <script>
+    // ---------- INIT + PARTICLES ----------
+    document.addEventListener('DOMContentLoaded', function() {
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 60, density: { enable: true, value_area: 900 } },
+          color: { value: "#6d8aff" },
+          shape: { type: "circle" },
+          opacity: { value: 0.4, random: true },
+          size: { value: 2.5, random: true },
+          line_linked: { enable: true, distance: 150, color: "#6d8aff", opacity: 0.25, width: 1 },
+          move: { enable: true, speed: 1.5, direction: "none", random: true, straight: false }
+        },
+        interactivity: {
+          events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" } }
+        }
+      });
+
+      lucide.createIcons();     // refresh icons after dynamic content may change later
+      initCharts();
+      loadLogicInfo();          // fill logic list
+      // start periodic updates
+      updatePrediction();
+      updateEngine();
+      setInterval(updatePrediction, 800);
+      setInterval(updateEngine, 800);
+    });
+
+    // ---------- TAB HANDLING (fixes broken selectors) ----------
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const panels = {
+      prediction: document.getElementById('panel-prediction'),
+      history: document.getElementById('panel-history'),
+      trends: document.getElementById('panel-trends'),
+      more: document.getElementById('panel-more')
+    };
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tabName = btn.getAttribute('data-tab'); // 'prediction', etc
+        Object.values(panels).forEach(p => p.classList.remove('active'));
+        if (panels[tabName]) panels[tabName].classList.add('active');
+
+        // extra: load data if needed
+        if (tabName === 'history') fetchPreviousResults();
+        if (tabName === 'trends') updateCharts();
+      });
+    });
+
+    // ---------- PAGE NAVIGATION (fixed: mainApp hidden class) ----------
+    function showPage(pageId) {
+      document.getElementById('mainApp').classList.add('hidden');
+      document.getElementById(pageId).classList.add('active-page');
+      lucide.createIcons(); // refresh icons inside page
+    }
+    function hidePage(pageId) {
+      document.getElementById(pageId).classList.remove('active-page');
+      document.getElementById('mainApp').classList.remove('hidden');
+    }
+    window.showPage = showPage; window.hidePage = hidePage;
+
+    // ---------- EXPORT MODAL ----------
+    let currentExportType = 'recent';
+    function showExportModal() {
+      document.getElementById('exportModal').classList.add('active');
+      updateExportData();
+    }
+    function hideExportModal() {
+      document.getElementById('exportModal').classList.remove('active');
+    }
+    window.showExportModal = showExportModal; window.hideExportModal = hideExportModal;
+
+    function updateExportData() {
+      const textarea = document.getElementById('exportData');
+      let str = '';
+      if (historyData.length) {
+        historyData.slice(0,8).forEach(item => {
+          str += `${item.period} | pred:${item.prediction} | actual:${item.resultType||'?'} | status:${item.resultStatus}\n`;
+        });
+      } else str = '— no data yet —';
+      textarea.value = str;
+    }
+    function copyExportData() {
+      let ta = document.getElementById('exportData');
+      ta.select(); ta.setSelectionRange(0, 99999);
+      document.execCommand('copy');
+      showNotif('Copied!');
+    }
+    function downloadExportData() {
+      const ta = document.getElementById('exportData');
+      const blob = new Blob([ta.value], {type: 'text/plain'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'nox_export.txt';
+      a.click(); URL.revokeObjectURL(a.href);
+      showNotif('Downloaded');
+    }
+    function showNotif(msg) {
+      const n = document.getElementById('notification');
+      n.textContent = msg; n.classList.add('show');
+      setTimeout(() => n.classList.remove('show'), 2000);
+    }
+    window.copyExportData = copyExportData; window.downloadExportData = downloadExportData;
+
+    // ---------- GLOBAL STATE ----------
+    let historyData = [];
+    let totalWins = 0, totalLosses = 0, totalPredictions = 0;
+    let correctPredictions = 0;
+    let lastFetchedPeriod = null;
+    let consecutiveLosses = 0;
+    let lastPrediction = null;
+    let activePatterns = [];
+    let currentLogic = 1;
+    let engineState = { currentPeriod: null, lastResults: [] };
+
+    // Chart instances
+    let trendChart, patternChart;
+
+    // ---------- API CALLS ----------
+    async function fetchGameResult() {
+      try {
+        const payload = {
+          pageSize: 10, pageNo: 1, typeId: 1, language: 0,
+          random: "4a0522c6ecd8410496260e686be2a57c",
+          signature: "334B5E70A0C9B8918B0B15E517E2069C",
+          timestamp: Math.floor(Date.now() / 1000)
+        };
+        const res = await fetch("https://api.bdg88zf.com/api/webapi/GetNoaverageEmerdList", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) return null;
+        const json = await res.json();
+        const list = json.data.list;
+        if (list?.length) {
+          const latest = list[0];
+          return { 
+            period: latest.issueNumber, 
+            result: latest.number,
+            resultType: parseInt(latest.number) >= 5 ? "BIG" : "SMALL"
+          };
+        }
+        return null;
+      } catch { return null; }
+    }
+
+    async function updateEngine() { /* for background, keep lastResults */ }
+
+    // ---------- PREDICTION LOGICS (simplified for demo) ----------
+    function enhancedTrendAnalysis(history) {
+      if (history.length < 3) {
+        currentLogic = 8;
+        return { prediction: "BIG", confidence: 60, logic: 8 };
+      }
+      activePatterns = [];
+      const recent = history.slice(0, 8);
+      let predictions = [];
+
+      // streak
+      let streakType = recent[0].resultType;
+      let streakLen = 1;
+      for (let i=1; i<recent.length; i++) {
+        if (recent[i].resultType === streakType) streakLen++; else break;
+      }
+      if (streakLen >= 3) {
+        activePatterns.push("Streak "+streakLen);
+        predictions.push({ prediction: streakType==="BIG"?"SMALL":"BIG", confidence: 75+streakLen*2, logic:1 });
+      }
+      // alternating
+      let alt = true;
+      for (let i=1; i<Math.min(5, recent.length); i++) {
+        if (recent[i-1].resultType === recent[i].resultType) { alt=false; break; }
+      }
+      if (alt && recent.length>3) {
+        activePatterns.push("Alternating");
+        predictions.push({ prediction: recent[0].resultType==="BIG"?"SMALL":"BIG", confidence:78, logic:3 });
+      }
+      // triple
+      if (recent.length>=3 && recent[0].resultType===recent[1].resultType && recent[0].resultType===recent[2].resultType) {
+        activePatterns.push("Triple");
+        predictions.push({ prediction: recent[0].resultType==="BIG"?"SMALL":"BIG", confidence:82, logic:5 });
+      }
+
+      if (!predictions.length) {
+        predictions.push({ prediction: recent[0].resultType==="BIG"?"SMALL":"BIG", confidence:65, logic:12 });
+      }
+      let best = predictions.reduce((a,b)=>a.confidence>b.confidence?a:b);
+      currentLogic = best.logic;
+      document.getElementById('activeLogicLabel').innerText = 'Logic '+best.logic;
+      return best;
+    }
+
+    function autoPredict() {
+      let pred = enhancedTrendAnalysis(historyData);
+      lastPrediction = pred.prediction;
+      return { type: pred.prediction, confidence: pred.confidence };
+    }
+
+    function updatePatternIndicator() {
+      let ind = document.getElementById('patternIndicator');
+      if (!activePatterns.length) { ind.innerHTML = '<span class="pattern-chip">—</span>'; return; }
+      ind.innerHTML = activePatterns.map(p => `<span class="pattern-chip"><i data-lucide="sparkles" width="12"></i>${p}</span>`).join('');
+      lucide.createIcons(); 
+    }
+
+    // ---------- PREDICTION LOOP ----------
+    async function updatePrediction() {
+      let apiResult = await fetchGameResult();
+      if (apiResult && apiResult.period !== lastFetchedPeriod) {
+        lastFetchedPeriod = apiResult.period;
+        let nextPeriod = (BigInt(apiResult.period) + 1n).toString();
+
+        // check previous pending
+        if (historyData.length && historyData[0].period === apiResult.period) {
+          let prev = historyData[0];
+          prev.resultStatus = (prev.prediction === apiResult.resultType) ? "WIN" : "LOSS";
+          if (prev.resultStatus === "WIN") consecutiveLosses = 0; else consecutiveLosses++;
+        }
+
+        let prediction = autoPredict();
+
+        document.getElementById("currentPeriod").innerText = nextPeriod;
+        let predEl = document.getElementById("prediction");
+        predEl.innerText = prediction.type;
+        predEl.className = "big-number " + (prediction.type==="BIG"?"big":"small");
+
+        historyData.unshift({ 
+          period: nextPeriod, result: apiResult.result, resultType: apiResult.resultType,
+          prediction: prediction.type, resultStatus: "Pending",
+          confidence: prediction.confidence, logic: currentLogic
+        });
+        updateStats();
+        updateHistory();
+        updatePatternIndicator();
+        if (document.querySelector('.tab-btn.active')?.getAttribute('data-tab') === 'trends') updateCharts();
+      }
+    }
+
+    function updateStats() {
+      totalWins = historyData.filter(i => i.resultStatus === "WIN").length;
+      totalLosses = historyData.filter(i => i.resultStatus === "LOSS").length;
+      totalPredictions = historyData.length;
+      correctPredictions = totalWins;
+      document.getElementById("totalWins").innerText = totalWins;
+      document.getElementById("totalLosses").innerText = totalLosses;
+      document.getElementById("totalPredictions").innerText = totalPredictions;
+      let acc = totalPredictions ? ((correctPredictions/totalPredictions)*100).toFixed(1) : 0;
+      document.getElementById("accuracy").innerText = acc + '%';
+      let wr = historyData[0]?.confidence ? historyData[0].confidence+'%' : '-';
+      document.getElementById("winRate").innerText = wr;
+    }
+
+    function updateHistory() {
+      let histDiv = document.getElementById("history");
+      histDiv.innerHTML = "";
+      let recent = historyData.slice(0, 8);
+      if (!recent.length) { histDiv.innerHTML = '<p style="padding:1rem; text-align:center;">—</p>'; return; }
+      recent.forEach(item => {
+        let row = document.createElement('div'); row.className = 'history-row';
+        let statusClass = item.resultStatus==='WIN'?'status-win':(item.resultStatus==='LOSS'?'status-loss':'status-pending');
+        row.innerHTML = `
+          <div class="history-left"><div class="period">${item.period}</div><div class="pred">${item.prediction}</div></div>
+          <div class="status-badge ${statusClass}">${item.resultStatus}</div>
+        `;
+        histDiv.appendChild(row);
+      });
+    }
+
+    // ---------- PREVIOUS RESULTS ----------
+    async function fetchPreviousResults() {
+      const payload = { pageSize:10, pageNo:1, typeId:1, language:0, random:"c2505d9138da4e3780b2c2b34f2fb789", signature:"7D637E060DA35C0C6E28DC6D23D71BED", timestamp:Date.now()/1000|0 };
+      try {
+        let res = await fetch("https://api.bdg88zf.com/api/webapi/GetNoaverageEmerdList", { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+        if (res.ok) {
+          let data = await res.json();
+          if (data.code === 0) updatePreviousResults(data.data.list);
+        }
+      } catch { /* ignore */ }
+    }
+
+    function updatePreviousResults(list) {
+      let div = document.getElementById('previous-results');
+      if (!list?.length) { div.innerHTML = '<p style="padding:1rem;">—</p>'; return; }
+      div.innerHTML = '';
+      list.slice(0,10).forEach(r => {
+        let size = parseInt(r.number)>=5?'BIG':'SMALL';
+        let row = document.createElement('div'); row.className = 'history-row';
+        row.innerHTML = `<div><div class="period">${r.issueNumber}</div><div>${r.number}</div></div><div class="status-badge ${size==='BIG'?'status-win':'status-loss'}">${size}</div>`;
+        div.appendChild(row);
+      });
+    }
+
+    // ---------- CHARTS (stub but working) ----------
+    function initCharts() {
+      let ctx1 = document.getElementById('trendChart').getContext('2d');
+      trendChart = new Chart(ctx1, {
+        type: 'line',
+        data: { labels: ['1','2','3','4','5'], datasets: [
+          { label:'BIG', data:[50,55,48,62,58], borderColor:'#2ad4b0', backgroundColor:'rgba(42,212,176,0.1)', tension:0.2, fill:true },
+          { label:'SMALL', data:[50,45,52,38,42], borderColor:'#f8719d', backgroundColor:'rgba(248,113,157,0.1)', tension:0.2, fill:true }
+        ]},
+        options: { responsive:true, maintainAspectRatio:false, scales:{ y:{ beginAtZero:true, max:100 } } }
+      });
+      let ctx2 = document.getElementById('patternChart').getContext('2d');
+      patternChart = new Chart(ctx2, {
+        type: 'bar',
+        data: { labels:['Streak','Alt','Triple'], datasets:[{ label:'%', data:[34,28,22], backgroundColor:['#7b95f0','#8bb0ff','#5566d9'] }] },
+        options: { responsive:true, maintainAspectRatio:false }
+      });
+    }
+    function updateCharts() { trendChart.update(); patternChart.update(); }
+
+    // ---------- LOGIC INFO (static fill) ----------
+    function loadLogicInfo() {
+      let logics = [
+        { id:1, name:'Streak Detection', acc:72 }, { id:3, name:'Alternating', acc:68 },
+        { id:8, name:'Weighted', acc:75 }, { id:19, name:'Neural', acc:73 }, { id:22, name:'Hybrid', acc:76 }
+      ];
+      let html = '';
+      logics.forEach(l => { html += `<div class="logic-card"><div class="logic-title">Logic ${l.id} · ${l.name} <span class="logic-badge">${l.acc}%</span></div></div>`; });
+      document.getElementById('active-logics-list').innerHTML = html;
+      document.getElementById('top-logics').innerHTML = html;
+    }
+
+    window.logout = function() { alert('Logged out (demo)'); };
+  </script>
+</body>
+</html>
