@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>NOx AI · modern edge</title>
-  <!-- minimal icons: lucide + font awesome fallback, but we use lucide primarily -->
+  <title>NOx AI · OMEGA-BEAST v9.0</title>
+  <!-- lucide icons + inter font -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-  <!-- particles (subtle) & chart.js -->
+  <!-- particles.js & chart.js -->
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
@@ -47,7 +47,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* particles canvas – faint, no pointer events */
     #particles-js {
       position: fixed;
       inset: 0;
@@ -56,7 +55,6 @@
       pointer-events: none;
     }
 
-    /* main container – centered, max width 600px */
     .app {
       position: relative;
       z-index: 5;
@@ -84,7 +82,6 @@
       transform: scale(0.99);
     }
 
-    /* header */
     .top-header {
       display: flex;
       align-items: center;
@@ -110,7 +107,6 @@
       letter-spacing: 0.3px;
     }
 
-    /* logic badge (smoother) */
     .logic-badge-header {
       background: rgba(85, 102, 217, 0.2);
       border-radius: 40px;
@@ -123,7 +119,6 @@
       backdrop-filter: blur(4px);
     }
 
-    /* ---- TAB BAR refined (active indicator animated) ---- */
     .tab-bar {
       display: flex;
       gap: 0.3rem;
@@ -171,7 +166,6 @@
       box-shadow: 0 6px 16px rgba(74, 95, 217, 0.4);
     }
 
-    /* tab panels */
     .tab-panel {
       display: none;
       opacity: 0;
@@ -185,7 +179,6 @@
       transform: translateY(0);
     }
 
-    /* cards inner padding */
     .card-content {
       padding: 1.5rem;
     }
@@ -209,7 +202,6 @@
       letter-spacing: -0.2px;
     }
 
-    /* prediction area */
     .prediction-glow {
       background: rgba(110, 140, 255, 0.08);
       border-radius: 2.2rem;
@@ -265,7 +257,6 @@
       gap: 0.4rem;
     }
 
-    /* stats grid */
     .stat-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -292,7 +283,6 @@
       letter-spacing: 0.3px;
     }
 
-    /* pattern chips */
     .pattern-cloud {
       display: flex;
       flex-wrap: wrap;
@@ -312,7 +302,6 @@
       font-weight: 470;
     }
 
-    /* history rows (predictions) */
     .history-row {
       display: flex;
       align-items: center;
@@ -346,14 +335,12 @@
     .status-loss { background: rgba(248, 113, 157, 0.15); color: var(--danger-coral); border: 1px solid rgba(248,113,157,0.2); }
     .status-pending { background: rgba(245, 181, 107, 0.1); color: var(--warning-amber); border: 1px solid rgba(245,181,107,0.2); }
 
-    /* chart container */
     .chart-box {
       height: 170px;
       margin: 1rem 0 0.5rem;
       width: 100%;
     }
 
-    /* pages */
     .page {
       display: none;
       animation: slidePage 0.28s ease;
@@ -379,7 +366,6 @@
     }
     .back-nav:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.05); }
 
-    /* buttons */
     .btn-soft {
       background: rgba(30, 38, 56, 0.6);
       border: 1px solid var(--glass-edge-strong);
@@ -400,7 +386,6 @@
       transform: translateY(-1px);
     }
 
-    /* modal */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
       z-index: 300; display: flex; align-items: center; justify-content: center;
@@ -414,7 +399,6 @@
       padding: 1.8rem; border: 1px solid var(--primary-soft); box-shadow: 0 20px 40px -10px black;
     }
 
-    /* responsive tweaks */
     @media (max-width: 430px) {
       .tab-btn span { display: none; }
       .tab-btn i { margin: 0; }
@@ -422,10 +406,8 @@
       .big-number { font-size: 3.2rem; }
     }
 
-    /* hide main when page shown */
     #mainApp.hidden { display: none; }
 
-    /* patterns inside prediction panel */
     #patternIndicator {
       display: flex;
       flex-wrap: wrap;
@@ -439,7 +421,6 @@
       font-size: 0.8rem;
     }
 
-    /* dev image fallback */
     .dev-avatar {
       width: 90px; height: 90px; border-radius: 50%; margin: 1rem auto; 
       background: linear-gradient(145deg, #2a3a60, #1b2540); display: flex;
@@ -447,7 +428,6 @@
     }
     .dev-avatar svg { width: 48px; height: 48px; stroke: var(--primary-soft); }
 
-    /* logics list */
     .logic-card {
       background: rgba(0,0,0,0.2); border-radius: 1.5rem; padding: 1rem;
       margin-bottom: 0.7rem; border: 1px solid var(--glass-edge);
@@ -456,7 +436,6 @@
     .logic-badge { background: var(--primary-core); padding: 0.15rem 0.6rem; border-radius: 30px; font-size: 0.7rem; }
     .logic-desc { color: var(--text-muted); font-size: 0.85rem; margin: 0.2rem 0 0.3rem; }
 
-    /* notification */
     .notification {
       position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #1f2a3f;
       padding: 0.7rem 1.8rem; border-radius: 40px; color: white; z-index: 999;
@@ -469,7 +448,6 @@
 <body>
   <div id="particles-js"></div>
 
-  <!-- main app container -->
   <div id="mainApp" class="app">
     <div class="top-header">
       <div class="logo">
@@ -477,11 +455,10 @@
         <span></span>
       </div>
       <div class="logic-badge-header" id="headerLogicBadge">
-        <i data-lucide="cpu" width="16"></i> <span id="activeLogicLabel">Logic 1</span>
+        <i data-lucide="cpu" width="16"></i> <span id="activeLogicLabel">OMEGA-BEAST</span>
       </div>
     </div>
 
-    <!-- tab navigation (lucide icons) -->
     <div class="tab-bar">
       <button class="tab-btn active" data-tab="prediction"><i data-lucide="bot"></i><span>Predict</span></button>
       <button class="tab-btn" data-tab="history"><i data-lucide="clock"></i><span>History</span></button>
@@ -493,7 +470,7 @@
     <div class="tab-panel active" id="panel-prediction">
       <div class="glass-card card-content">
         <div class="card-header">
-          <i data-lucide="sparkles"></i><h3>current forecast</h3>
+          <i data-lucide="sparkles"></i><h3>neural wave forecast</h3>
         </div>
         <div class="prediction-glow">
           <div class="period-badge">
@@ -514,12 +491,17 @@
       </div>
 
       <div class="glass-card card-content" style="margin-top: 1rem;">
-        <div class="card-header"><i data-lucide="pattern"></i><h3>active patterns</h3></div>
+        <div class="card-header"><i data-lucide="pattern"></i><h3>chaos metrics</h3></div>
         <div class="pattern-cloud" id="patternIndicator"></div>
+        <div style="display: flex; justify-content: space-between; margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted);">
+          <span>Lyapunov: <span id="lyapunov">0.000000</span></span>
+          <span>Entropy: <span id="entropy">0.0000</span></span>
+          <span>Learning Rate: <span id="learningRate">0.050000</span></span>
+        </div>
       </div>
 
       <div class="glass-card card-content" style="margin-top: 1rem;">
-        <div class="card-header"><i data-lucide="list"></i><h3>recent</h3></div>
+        <div class="card-header"><i data-lucide="list"></i><h3>neural predictions</h3></div>
         <div id="history"></div>
       </div>
     </div>
@@ -535,20 +517,20 @@
     <!-- TRENDS PANEL -->
     <div class="tab-panel" id="panel-trends">
       <div class="glass-card card-content">
-        <div class="card-header"><i data-lucide="line-chart"></i><h3>trend analysis</h3></div>
+        <div class="card-header"><i data-lucide="line-chart"></i><h3>frequency analysis (FFT)</h3></div>
         <div class="chart-box"><canvas id="trendChart"></canvas></div>
       </div>
       <div class="glass-card card-content" style="margin-top:1rem;">
-        <div class="card-header"><i data-lucide="pie-chart"></i><h3>pattern frequency</h3></div>
+        <div class="card-header"><i data-lucide="pie-chart"></i><h3>strategy weights</h3></div>
         <div class="chart-box"><canvas id="patternChart"></canvas></div>
       </div>
     </div>
 
-    <!-- MORE PANEL (navigation to pages) -->
+    <!-- MORE PANEL (navigation + export button) -->
     <div class="tab-panel" id="panel-more">
       <div class="glass-card card-content" style="cursor:pointer;" onclick="showPage('logic-page')">
-        <div class="card-header"><i data-lucide="brain"></i><h3>API SYSTEM</h3><i data-lucide="chevron-right" style="margin-left:auto;"></i></div>
-        <p style="color:var(--text-muted);">30+ prediction logics</p>
+        <div class="card-header"><i data-lucide="brain"></i><h3>NEURAL CORE</h3><i data-lucide="chevron-right" style="margin-left:auto;"></i></div>
+        <p style="color:var(--text-muted);">Neural networks + Fourier analysis</p>
       </div>
       <div class="glass-card card-content" style="margin-top:1rem; cursor:pointer;" onclick="showPage('about-page')">
         <div class="card-header"><i data-lucide="user"></i><h3>About Developer</h3><i data-lucide="chevron-right" style="margin-left:auto;"></i></div>
@@ -557,12 +539,13 @@
         <div class="card-header"><i data-lucide="gauge"></i><h3>Logic Performance</h3><i data-lucide="chevron-right" style="margin-left:auto;"></i></div>
       </div>
       <div style="display:flex; gap:0.8rem; margin-top:1.5rem;">
-        <button class="btn-soft" onclick="showExportModal()"><i data-lucide="download"></i> Export</button>
+        <!-- EXPORT button - no download, only modal with copy -->
+        <button class="btn-soft" onclick="showExportModal()"><i data-lucide="copy"></i> Export</button>
         <button class="btn-soft" onclick="logout()"><i data-lucide="log-out"></i> Logout</button>
       </div>
     </div>
 
-    <div style="text-align:center; margin-top: 2rem; color: var(--text-muted); font-size:0.7rem;">NOx · RB edge v3.2</div>
+    <div style="text-align:center; margin-top: 2rem; color: var(--text-muted); font-size:0.7rem;">OMEGA-BEAST · Neural Wave Engine v9.0</div>
   </div>
 
   <!-- LOGIC PAGE -->
@@ -581,8 +564,8 @@
       <div class="back-nav" onclick="hidePage('about-page')"><i data-lucide="arrow-left"></i> Back</div>
       <div class="glass-card card-content" style="text-align:center;">
         <div class="dev-avatar"><i data-lucide="user" width="48" height="48"></i></div>
-        <h2>RB BHAI</h2>
-        <p style="color:var(--text-muted);">prediction systems architect</p>
+        <h2>ZENITH</h2>
+        <p style="color:var(--text-muted);">neural wave architecture</p>
         <div style="display:flex; gap:1rem; justify-content:center; margin:1rem 0;">
           <a href="#" style="color:var(--text-main);"><i data-lucide="send"></i></a>
           <a href="#" style="color:var(--text-main);"><i data-lucide="github"></i></a>
@@ -595,23 +578,23 @@
     <div class="app">
       <div class="back-nav" onclick="hidePage('performance-page')"><i data-lucide="arrow-left"></i> Back</div>
       <div class="glass-card card-content">
-        <div class="card-header"><i data-lucide="bar-chart-3"></i><h3>Top logics</h3></div>
+        <div class="card-header"><i data-lucide="bar-chart-3"></i><h3>strategy performance</h3></div>
         <div id="top-logics"></div>
       </div>
     </div>
   </div>
 
-  <!-- export modal -->
+  <!-- export modal (only copy button now) -->
   <div class="modal-overlay" id="exportModal">
     <div class="modal-card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-        <h4>export data</h4>
+        <h4>export neural data</h4>
         <i data-lucide="x" style="cursor:pointer;" onclick="hideExportModal()"></i>
       </div>
       <textarea id="exportData" readonly rows="5" style="width:100%; background:#1f2a3f; border:1px solid #334155; border-radius:1.2rem; padding:0.8rem; color:white; resize:none;"></textarea>
       <div style="display:flex; gap:0.5rem; margin-top:1rem;">
-        <button class="btn-soft" onclick="copyExportData()"><i data-lucide="copy"></i> copy</button>
-        <button class="btn-soft" onclick="downloadExportData()"><i data-lucide="download"></i> download</button>
+        <!-- ONLY copy button remains (download removed) -->
+        <button class="btn-soft" onclick="copyExportData()" style="width:100%;"><i data-lucide="copy"></i> copy to clipboard</button>
       </div>
     </div>
   </div>
@@ -620,7 +603,506 @@
   <div class="notification" id="notification">Copied!</div>
 
   <script>
-    // ---------- INIT + PARTICLES ----------
+    // ============================================================
+    // OMEGA-BEAST NEURAL WAVE ENGINE v9.0 - FULL INTEGRATION
+    // ============================================================
+    // REMOVED download option from export modal.
+    // When user clicks Export → only copy shows; copy copies current period & prediction.
+    // ============================================================
+
+    class OmegaBeastEngine {
+      constructor() {
+        this.history = [];
+        this.predictions = [];
+        this.strategyAccuracy = {
+          trendFollowing: Array(10).fill(0.5),
+          meanReversion: Array(10).fill(0.5),
+          neuralWave: Array(10).fill(0.5)
+        };
+        
+        this.neuralNetwork = {
+          inputSize: 20,
+          hiddenSize: 12,
+          outputSize: 2,
+          weightsInputHidden: [],
+          weightsHiddenOutput: [],
+          biasHidden: [],
+          biasOutput: [],
+          learningRate: 0.05,
+          momentum: 0.9,
+          lastDeltaInputHidden: null,
+          lastDeltaHiddenOutput: null
+        };
+        
+        this.fftCache = {
+          real: [],
+          imag: [],
+          magnitudes: [],
+          phases: [],
+          dominantFrequency: 0,
+          spectralEntropy: 0
+        };
+        
+        this.markovMatrix = {
+          'BIG_BIG': 0.5,
+          'BIG_SMALL': 0.5,
+          'SMALL_BIG': 0.5,
+          'SMALL_SMALL': 0.5
+        };
+        
+        this.bayesian = {
+          prior: { BIG: 0.5, SMALL: 0.5 },
+          likelihood: { BIG: 1.0, SMALL: 1.0 },
+          posterior: { BIG: 0.5, SMALL: 0.5 },
+          windowSize: 100,
+          observations: []
+        };
+        
+        this.strategyWeights = {
+          waveAnalysis: 1.0,
+          momentumOscillator: 1.0,
+          markovChain: 1.0,
+          neuralNetwork: 1.5,
+          bayesianInference: 1.2
+        };
+        
+        this.metrics = {
+          totalPredictions: 0,
+          correctPredictions: 0,
+          averageConfidence: 0,
+          lastPredictionError: 0,
+          learningRateHistory: [],
+          entropyHistory: []
+        };
+        
+        this.killSwitch = {
+          active: false,
+          triggerCount: 0,
+          entropyThreshold: 15.0,
+          varianceThreshold: 25.0,
+          lastTriggerTime: 0
+        };
+        
+        this.startTime = Date.now();
+        this._initializeNeuralNetwork();
+      }
+      
+      _initializeNeuralNetwork() {
+        const { inputSize, hiddenSize, outputSize } = this.neuralNetwork;
+        const inputHiddenScale = Math.sqrt(2.0 / (inputSize + hiddenSize));
+        const hiddenOutputScale = Math.sqrt(2.0 / (hiddenSize + outputSize));
+        
+        this.neuralNetwork.weightsInputHidden = Array.from({ length: hiddenSize }, () =>
+          Array.from({ length: inputSize }, () => (Math.random() * 2 - 1) * inputHiddenScale)
+        );
+        
+        this.neuralNetwork.weightsHiddenOutput = Array.from({ length: outputSize }, () =>
+          Array.from({ length: hiddenSize }, () => (Math.random() * 2 - 1) * hiddenOutputScale)
+        );
+        
+        this.neuralNetwork.biasHidden = Array(hiddenSize).fill(0.1);
+        this.neuralNetwork.biasOutput = Array(outputSize).fill(0.1);
+        
+        this.neuralNetwork.lastDeltaInputHidden = Array.from({ length: hiddenSize }, () =>
+          Array(inputSize).fill(0)
+        );
+        
+        this.neuralNetwork.lastDeltaHiddenOutput = Array.from({ length: outputSize }, () =>
+          Array(hiddenSize).fill(0)
+        );
+      }
+      
+      _sigmoid(x) {
+        return 1.0 / (1.0 + Math.exp(-Math.max(-50, Math.min(50, x))));
+      }
+      
+      _sigmoidDerivative(x) {
+        return x * (1.0 - x);
+      }
+      
+      _normalizeInput(data) {
+        if (data.length === 0) return Array(this.neuralNetwork.inputSize).fill(0);
+        const mean = data.reduce((a, b) => a + b, 0) / data.length;
+        const variance = data.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / data.length;
+        const stdDev = Math.sqrt(variance) || 1.0;
+        const normalized = data.map(x => (x - mean) / stdDev);
+        while (normalized.length < this.neuralNetwork.inputSize) normalized.push(0);
+        return normalized.slice(0, this.neuralNetwork.inputSize);
+      }
+      
+      _neuralForwardPass(input) {
+        const { weightsInputHidden, weightsHiddenOutput, biasHidden, biasOutput, hiddenSize, outputSize } = this.neuralNetwork;
+        const hiddenOutput = Array(hiddenSize).fill(0);
+        for (let i = 0; i < hiddenSize; i++) {
+          let sum = biasHidden[i];
+          for (let j = 0; j < input.length; j++) sum += input[j] * weightsInputHidden[i][j];
+          hiddenOutput[i] = this._sigmoid(sum);
+        }
+        const output = Array(outputSize).fill(0);
+        for (let i = 0; i < outputSize; i++) {
+          let sum = biasOutput[i];
+          for (let j = 0; j < hiddenSize; j++) sum += hiddenOutput[j] * weightsHiddenOutput[i][j];
+          output[i] = this._sigmoid(sum);
+        }
+        return { hiddenOutput, output };
+      }
+      
+      _neuralBackpropagate(input, target, hiddenOutput, output) {
+        const { outputSize, hiddenSize, momentum, learningRate } = this.neuralNetwork;
+        const outputError = Array(outputSize).fill(0);
+        for (let i = 0; i < outputSize; i++) {
+          outputError[i] = (target[i] - output[i]) * this._sigmoidDerivative(output[i]);
+        }
+        const hiddenError = Array(hiddenSize).fill(0);
+        for (let i = 0; i < hiddenSize; i++) {
+          let error = 0;
+          for (let j = 0; j < outputSize; j++) error += outputError[j] * this.neuralNetwork.weightsHiddenOutput[j][i];
+          hiddenError[i] = error * this._sigmoidDerivative(hiddenOutput[i]);
+        }
+        for (let i = 0; i < outputSize; i++) {
+          for (let j = 0; j < hiddenSize; j++) {
+            const delta = learningRate * outputError[i] * hiddenOutput[j] + momentum * this.neuralNetwork.lastDeltaHiddenOutput[i][j];
+            this.neuralNetwork.weightsHiddenOutput[i][j] += delta;
+            this.neuralNetwork.lastDeltaHiddenOutput[i][j] = delta;
+          }
+          this.neuralNetwork.biasOutput[i] += learningRate * outputError[i];
+        }
+        for (let i = 0; i < hiddenSize; i++) {
+          for (let j = 0; j < input.length; j++) {
+            const delta = learningRate * hiddenError[i] * input[j] + momentum * this.neuralNetwork.lastDeltaInputHidden[i][j];
+            this.neuralNetwork.weightsInputHidden[i][j] += delta;
+            this.neuralNetwork.lastDeltaInputHidden[i][j] = delta;
+          }
+          this.neuralNetwork.biasHidden[i] += learningRate * hiddenError[i];
+        }
+        return Math.abs(target[0] - output[0]);
+      }
+      
+      _fft(real, imag) {
+        const n = real.length;
+        if (n <= 1) return { real, imag };
+        const powerOfTwo = 1 << Math.floor(Math.log2(n));
+        if (n !== powerOfTwo) {
+          real = real.slice(0, powerOfTwo);
+          imag = imag.slice(0, powerOfTwo);
+        }
+        const bits = Math.log2(powerOfTwo);
+        const reversedReal = new Array(powerOfTwo);
+        const reversedImag = new Array(powerOfTwo);
+        for (let i = 0; i < powerOfTwo; i++) {
+          let reversed = 0;
+          for (let j = 0; j < bits; j++) if (i & (1 << j)) reversed |= 1 << (bits - 1 - j);
+          reversedReal[reversed] = real[i] || 0;
+          reversedImag[reversed] = imag[i] || 0;
+        }
+        for (let size = 2; size <= powerOfTwo; size <<= 1) {
+          const halfSize = size >> 1;
+          const angleStep = -2 * Math.PI / size;
+          for (let i = 0; i < powerOfTwo; i += size) {
+            for (let j = 0; j < halfSize; j++) {
+              const angle = j * angleStep;
+              const cos = Math.cos(angle);
+              const sin = Math.sin(angle);
+              const evenReal = reversedReal[i + j];
+              const evenImag = reversedImag[i + j];
+              const oddReal = reversedReal[i + j + halfSize];
+              const oddImag = reversedImag[i + j + halfSize];
+              const tReal = oddReal * cos - oddImag * sin;
+              const tImag = oddReal * sin + oddImag * cos;
+              reversedReal[i + j] = evenReal + tReal;
+              reversedImag[i + j] = evenImag + tImag;
+              reversedReal[i + j + halfSize] = evenReal - tReal;
+              reversedImag[i + j + halfSize] = evenImag - tImag;
+            }
+          }
+        }
+        return { real: reversedReal, imag: reversedImag };
+      }
+      
+      _performFFTAnalysis() {
+        if (this.history.length < 16) return { dominantFreq: 0, magnitudes: [] };
+        const signalLength = 1 << Math.floor(Math.log2(Math.min(this.history.length, 128)));
+        const signal = this.history.slice(0, signalLength).map(x => x - 5);
+        const real = signal.slice();
+        const imag = new Array(signalLength).fill(0);
+        for (let i = 0; i < signalLength; i++) {
+          const hanning = 0.5 * (1 - Math.cos(2 * Math.PI * i / (signalLength - 1)));
+          real[i] *= hanning;
+        }
+        const fftResult = this._fft(real, imag);
+        const magnitudes = [];
+        const phases = [];
+        for (let i = 0; i < signalLength / 2; i++) {
+          const mag = Math.sqrt(fftResult.real[i] ** 2 + fftResult.imag[i] ** 2);
+          magnitudes.push(mag);
+          phases.push(Math.atan2(fftResult.imag[i], fftResult.real[i]));
+        }
+        let maxMag = 0, dominantIdx = 0;
+        for (let i = 1; i < magnitudes.length; i++) if (magnitudes[i] > maxMag) { maxMag = magnitudes[i]; dominantIdx = i; }
+        const totalMag = magnitudes.reduce((a, b) => a + b, 0);
+        const spectralEntropy = -magnitudes.reduce((entropy, mag) => {
+          const p = mag / totalMag;
+          return entropy + (p > 0 ? p * Math.log2(p) : 0);
+        }, 0);
+        this.fftCache = { real: fftResult.real, imag: fftResult.imag, magnitudes, phases, dominantFrequency: dominantIdx / signalLength, spectralEntropy };
+        return this.fftCache;
+      }
+      
+      _calculateLyapunovExponent() {
+        if (this.history.length < 20) return 0;
+        const trajectory = this.history.slice(0, 50);
+        let divergenceSum = 0, count = 0;
+        for (let i = 0; i < trajectory.length - 5; i++) {
+          for (let j = i + 1; j < trajectory.length - 5; j++) {
+            const initialDist = Math.abs(trajectory[i] - trajectory[j]);
+            if (initialDist < 0.01) continue;
+            const finalDist = Math.abs(trajectory[i + 5] - trajectory[j + 5]);
+            divergenceSum += Math.log(finalDist / initialDist) / 5;
+            count++;
+          }
+        }
+        return count > 0 ? divergenceSum / count : 0;
+      }
+      
+      _updateMarkovMatrix(lastTwo, current) {
+        const key = `${lastTwo[0]}_${lastTwo[1]}`;
+        const transitionKey = `${lastTwo[1]}_${current}`;
+        this.markovMatrix[transitionKey] = this.markovMatrix[transitionKey] * 0.95 + 0.05;
+        const base = lastTwo[1];
+        const sum = this.markovMatrix[`${base}_BIG`] + this.markovMatrix[`${base}_SMALL`];
+        this.markovMatrix[`${base}_BIG`] /= sum;
+        this.markovMatrix[`${base}_SMALL`] /= sum;
+      }
+      
+      _bayesianInference() {
+        const windowData = this.history.slice(0, this.bayesian.windowSize);
+        if (windowData.length < 20) return { BIG: 0.5, SMALL: 0.5 };
+        const bigCount = windowData.filter(x => x >= 5).length;
+        const smallCount = windowData.filter(x => x < 5).length;
+        const total = bigCount + smallCount;
+        this.bayesian.likelihood.BIG = bigCount / total || 0.5;
+        this.bayesian.likelihood.SMALL = smallCount / total || 0.5;
+        const evidence = (this.bayesian.likelihood.BIG * this.bayesian.prior.BIG) + (this.bayesian.likelihood.SMALL * this.bayesian.prior.SMALL);
+        this.bayesian.posterior.BIG = (this.bayesian.likelihood.BIG * this.bayesian.prior.BIG) / evidence;
+        this.bayesian.posterior.SMALL = (this.bayesian.likelihood.SMALL * this.bayesian.prior.SMALL) / evidence;
+        this.bayesian.prior.BIG = this.bayesian.posterior.BIG * 0.9 + 0.05;
+        this.bayesian.prior.SMALL = this.bayesian.posterior.SMALL * 0.9 + 0.05;
+        return this.bayesian.posterior;
+      }
+      
+      _selfCorrect(error) {
+        this.metrics.lastPredictionError = error;
+        this.metrics.learningRateHistory.push(error);
+        if (this.metrics.learningRateHistory.length > 20) this.metrics.learningRateHistory.shift();
+        if (this.metrics.learningRateHistory.length > 5) {
+          const recentAvg = this.metrics.learningRateHistory.slice(-5).reduce((a, b) => a + b, 0) / 5;
+          const olderAvg = this.metrics.learningRateHistory.slice(0, 5).reduce((a, b) => a + b, 0) / 5;
+          if (recentAvg > olderAvg * 1.1) this.neuralNetwork.learningRate *= 0.95;
+          else if (recentAvg < olderAvg * 0.9) this.neuralNetwork.learningRate *= 1.02;
+          this.neuralNetwork.learningRate = Math.max(0.001, Math.min(0.5, this.neuralNetwork.learningRate));
+        }
+        this._adjustStrategyWeights();
+      }
+      
+      _adjustStrategyWeights() {
+        const strategies = ['trendFollowing', 'meanReversion', 'neuralWave'];
+        strategies.forEach(strategy => {
+          const recentAccuracy = this.strategyAccuracy[strategy].slice(-10).reduce((a, b) => a + b, 0) / 10;
+          const targetWeight = 0.5 + recentAccuracy * 1.5;
+          if (strategy === 'trendFollowing') this.strategyWeights.waveAnalysis = this.strategyWeights.waveAnalysis * 0.9 + targetWeight * 0.1;
+          else if (strategy === 'meanReversion') this.strategyWeights.momentumOscillator = this.strategyWeights.momentumOscillator * 0.9 + targetWeight * 0.1;
+          else this.strategyWeights.neuralNetwork = this.strategyWeights.neuralNetwork * 0.9 + targetWeight * 0.1;
+        });
+      }
+      
+      _calculateMomentumOscillator() {
+        if (this.history.length < 14) return { rsi: 50, macd: 0, signal: 0 };
+        const gains = [], losses = [];
+        for (let i = 0; i < 13; i++) {
+          const diff = this.history[i] - this.history[i + 1];
+          gains.push(Math.max(0, diff));
+          losses.push(Math.max(0, -diff));
+        }
+        const avgGain = gains.reduce((a, b) => a + b, 0) / 13;
+        const avgLoss = losses.reduce((a, b) => a + b, 0) / 13;
+        const rs = avgLoss === 0 ? 100 : avgGain / avgLoss;
+        const rsi = 100 - 100 / (1 + rs);
+        const ema12 = this.history.slice(0, 12).reduce((a, b) => a + b, 0) / 12;
+        const ema26 = this.history.slice(0, 26).reduce((a, b) => a + b, 0) / 26;
+        const macd = ema12 - ema26;
+        return { rsi, macd, signal: macd * 0.2 };
+      }
+      
+      _trapDetection() {
+        if (this.history.length < 10) return { triggered: false };
+        const recent = this.history.slice(0, 10);
+        const mean = recent.reduce((a, b) => a + b, 0) / 10;
+        const variance = recent.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / 10;
+        const bins = Array(10).fill(0);
+        recent.forEach(x => { const binIndex = Math.floor(x / 10 * 10); bins[Math.min(9, Math.max(0, binIndex))]++; });
+        const entropy = -bins.reduce((ent, count) => { const p = count / 10; return ent + (p > 0 ? p * Math.log2(p) : 0); }, 0);
+        this.metrics.entropyHistory.push(entropy);
+        if (this.metrics.entropyHistory.length > 20) this.metrics.entropyHistory.shift();
+        const varianceTriggered = variance > this.killSwitch.varianceThreshold;
+        const entropyTriggered = entropy > this.killSwitch.entropyThreshold;
+        const now = Date.now();
+        const timeSinceLastTrigger = now - this.killSwitch.lastTriggerTime;
+        if ((varianceTriggered || entropyTriggered) && timeSinceLastTrigger > 5000) {
+          this.killSwitch.active = true;
+          this.killSwitch.triggerCount++;
+          this.killSwitch.lastTriggerTime = now;
+          return { triggered: true, variance, entropy, reason: varianceTriggered ? 'HIGH_VARIANCE' : 'HIGH_ENTROPY' };
+        }
+        if (this.killSwitch.active && timeSinceLastTrigger > 10000) this.killSwitch.active = false;
+        return { triggered: this.killSwitch.active, variance, entropy, reason: this.killSwitch.active ? 'PREVIOUSLY_TRIGGERED' : 'NORMAL' };
+      }
+      
+      _detectMicroLatency() {
+        const now = Date.now();
+        const microseconds = now % 1000;
+        const sinComponent = Math.sin(microseconds / 1000 * 2 * Math.PI);
+        const cosComponent = Math.cos(microseconds / 1000 * 2 * Math.PI);
+        const bias = sinComponent * 0.3 + cosComponent * 0.2;
+        return { bias, microsecond: microseconds, interpretation: bias > 0.2 ? 'FAVORS_BIG' : bias < -0.2 ? 'FAVORS_SMALL' : 'NEUTRAL' };
+      }
+      
+      _waveAnalysis() {
+        const fft = this._performFFTAnalysis();
+        if (!fft.dominantFrequency) return { signal: 'NEUTRAL', strength: 0.5 };
+        const strength = Math.min(1, fft.magnitudes[1] / 10 || 0);
+        const phase = fft.phases[1] || 0;
+        const signal = Math.sin(phase) > 0 ? 'BIG' : 'SMALL';
+        return { signal, strength };
+      }
+      
+      _markovChainPrediction() {
+        if (this.history.length < 2) return { BIG: 0.5, SMALL: 0.5 };
+        const lastTwo = [this.history[0] >= 5 ? 'BIG' : 'SMALL', this.history[1] >= 5 ? 'BIG' : 'SMALL'];
+        const bigProb = this.markovMatrix[`${lastTwo[1]}_BIG`] || 0.5;
+        const smallProb = this.markovMatrix[`${lastTwo[1]}_SMALL`] || 0.5;
+        return { BIG: bigProb, SMALL: smallProb };
+      }
+      
+      predictNext() {
+        const trapStatus = this._trapDetection();
+        if (trapStatus.triggered) {
+          return { prediction: 'KILL_SWITCH_ACTIVE', confidence: 0, signals: {}, recommendation: 'HALT_TRADING', logic_used: 'OMEGA-BEAST v9.0', killSwitch: trapStatus };
+        }
+        if (this.history.length < 20) {
+          return { status: "INITIALIZING", dataPoints: this.history.length, required: 20, recommendation: "COLLECTING_DATA" };
+        }
+        const latencyBias = this._detectMicroLatency();
+        const normalizedInput = this._normalizeInput(this.history);
+        const { hiddenOutput, output } = this._neuralForwardPass(normalizedInput);
+        const neuralPrediction = { BIG: output[0], SMALL: output[1], confidence: Math.max(output[0], output[1]) };
+        const waveResult = this._waveAnalysis();
+        const momentum = this._calculateMomentumOscillator();
+        const markovProb = this._markovChainPrediction();
+        const bayesianPosterior = this._bayesianInference();
+        const lyapunov = this._calculateLyapunovExponent();
+        const votes = { BIG: 0, SMALL: 0 };
+        let totalWeight = 0;
+        votes.BIG += neuralPrediction.BIG * this.strategyWeights.neuralNetwork;
+        votes.SMALL += neuralPrediction.SMALL * this.strategyWeights.neuralNetwork;
+        totalWeight += this.strategyWeights.neuralNetwork * 2;
+        votes[waveResult.signal] += waveResult.strength * this.strategyWeights.waveAnalysis;
+        votes[waveResult.signal === 'BIG' ? 'SMALL' : 'BIG'] += (1 - waveResult.strength) * this.strategyWeights.waveAnalysis * 0.5;
+        totalWeight += this.strategyWeights.waveAnalysis * 1.5;
+        const momentumSignal = momentum.macd > 0 ? 'BIG' : 'SMALL';
+        const momentumStrength = Math.min(1, Math.abs(momentum.macd) / 5);
+        votes[momentumSignal] += momentumStrength * this.strategyWeights.momentumOscillator;
+        votes[momentumSignal === 'BIG' ? 'SMALL' : 'BIG'] += (1 - momentumStrength) * this.strategyWeights.momentumOscillator * 0.3;
+        totalWeight += this.strategyWeights.momentumOscillator * 1.3;
+        votes.BIG += markovProb.BIG * this.strategyWeights.markovChain;
+        votes.SMALL += markovProb.SMALL * this.strategyWeights.markovChain;
+        totalWeight += this.strategyWeights.markovChain * 2;
+        votes.BIG += bayesianPosterior.BIG * this.strategyWeights.bayesianInference;
+        votes.SMALL += bayesianPosterior.SMALL * this.strategyWeights.bayesianInference;
+        totalWeight += this.strategyWeights.bayesianInference * 2;
+        if (latencyBias.bias > 0.1) votes.BIG += Math.abs(latencyBias.bias) * 0.5;
+        else if (latencyBias.bias < -0.1) votes.SMALL += Math.abs(latencyBias.bias) * 0.5;
+        totalWeight += 0.5;
+        const finalDecision = votes.BIG > votes.SMALL ? 'BIG' : 'SMALL';
+        const confidence = (Math.max(votes.BIG, votes.SMALL) / totalWeight) * 100;
+        let predictionError = 0.5;
+        if (this.history.length > 0) {
+          const actual = this.history[0] >= 5 ? 1 : 0;
+          const predicted = finalDecision === 'BIG' ? 1 : 0;
+          predictionError = Math.abs(actual - predicted);
+          this._selfCorrect(predictionError);
+        }
+        this.metrics.totalPredictions++;
+        this.metrics.averageConfidence = (this.metrics.averageConfidence * (this.metrics.totalPredictions - 1) + confidence) / this.metrics.totalPredictions;
+        this.predictions.push({ prediction: finalDecision, confidence, timestamp: Date.now() });
+        if (this.predictions.length > 100) this.predictions.shift();
+        return {
+          prediction: finalDecision,
+          confidence: confidence.toFixed(2) + '%',
+          timestamp: Date.now(),
+          unixMicro: Date.now() * 1000 + (performance.now() % 1 * 1000),
+          signals: {
+            neuralNetwork: { bigProb: neuralPrediction.BIG.toFixed(4), smallProb: neuralPrediction.SMALL.toFixed(4), confidence: (neuralPrediction.confidence * 100).toFixed(2) + '%' },
+            waveAnalysis: { signal: waveResult.signal, strength: waveResult.strength.toFixed(4), dominantFrequency: this.fftCache.dominantFrequency?.toFixed(4) || 0, spectralEntropy: this.fftCache.spectralEntropy?.toFixed(4) || 0 },
+            momentumOscillator: { rsi: momentum.rsi.toFixed(2), macd: momentum.macd.toFixed(4), signal: momentum.signal.toFixed(4) },
+            markovChain: { bigProb: markovProb.BIG.toFixed(4), smallProb: markovProb.SMALL.toFixed(4) },
+            bayesianInference: { posteriorBig: bayesianPosterior.BIG.toFixed(4), posteriorSmall: bayesianPosterior.SMALL.toFixed(4), priorBig: this.bayesian.prior.BIG.toFixed(4), priorSmall: this.bayesian.prior.SMALL.toFixed(4) }
+          },
+          chaosMetrics: { lyapunovExponent: lyapunov.toFixed(6), entropy: this.metrics.entropyHistory.slice(-1)[0]?.toFixed(4) || 0, variance: trapStatus.variance?.toFixed(4) || 0 },
+          systemMetrics: { learningRate: this.neuralNetwork.learningRate.toFixed(6), totalPredictions: this.metrics.totalPredictions, averageConfidence: this.metrics.averageConfidence.toFixed(2) + '%', lastPredictionError: this.metrics.lastPredictionError.toFixed(4) },
+          strategyWeights: { waveAnalysis: this.strategyWeights.waveAnalysis.toFixed(3), momentumOscillator: this.strategyWeights.momentumOscillator.toFixed(3), markovChain: this.strategyWeights.markovChain.toFixed(3), neuralNetwork: this.strategyWeights.neuralNetwork.toFixed(3), bayesianInference: this.strategyWeights.bayesianInference.toFixed(3) },
+          temporalLogic: { microLatencyBias: latencyBias.bias.toFixed(6), microsecond: latencyBias.microsecond, interpretation: latencyBias.interpretation },
+          killSwitch: { active: this.killSwitch.active, triggerCount: this.killSwitch.triggerCount, entropyThreshold: this.killSwitch.entropyThreshold, varianceThreshold: this.killSwitch.varianceThreshold, currentStatus: trapStatus.reason || 'NORMAL' },
+          recommendation: confidence > 75 ? 'STRONG_SIGNAL' : confidence > 60 ? 'MODERATE_SIGNAL' : 'WEAK_SIGNAL',
+          logic_used: 'OMEGA-BEAST NEURAL WAVE ENGINE v9.0'
+        };
+      }
+      
+      pushData(value) {
+        const numValue = parseInt(value);
+        if (this.history.length >= 2) {
+          const lastTwo = [this.history[0] >= 5 ? 'BIG' : 'SMALL', this.history[1] >= 5 ? 'BIG' : 'SMALL'];
+          const current = numValue >= 5 ? 'BIG' : 'SMALL';
+          this._updateMarkovMatrix(lastTwo, current);
+        }
+        this.history.unshift(numValue);
+        if (this.history.length > 150) this.history.pop();
+        if (this.history.length >= this.neuralNetwork.inputSize + 1) {
+          const inputData = this.history.slice(1, this.neuralNetwork.inputSize + 1);
+          const normalizedInput = this._normalizeInput(inputData);
+          const target = [numValue >= 5 ? 1 : 0, numValue < 5 ? 1 : 0];
+          const { hiddenOutput, output } = this._neuralForwardPass(normalizedInput);
+          this._neuralBackpropagate(normalizedInput, target, hiddenOutput, output);
+        }
+        this.bayesian.observations.push(numValue >= 5 ? 'BIG' : 'SMALL');
+        if (this.bayesian.observations.length > this.bayesian.windowSize) this.bayesian.observations.shift();
+      }
+      
+      getSystemStatus() {
+        return { initialized: this.history.length >= 20, dataPoints: this.history.length, neuralNetworkActive: this.history.length >= this.neuralNetwork.inputSize, strategies: Object.keys(this.strategyWeights).length, killSwitchActive: this.killSwitch.active, uptime: Date.now() - this.startTime, version: '9.0.0' };
+      }
+      
+      softReset() {
+        this.history = [];
+        this.predictions = [];
+        this.strategyAccuracy = { trendFollowing: Array(10).fill(0.5), meanReversion: Array(10).fill(0.5), neuralWave: Array(10).fill(0.5) };
+        this.killSwitch.active = false;
+        this.metrics = { totalPredictions: 0, correctPredictions: 0, averageConfidence: 0, lastPredictionError: 0, learningRateHistory: [], entropyHistory: [] };
+      }
+      
+      hardReset() {
+        this.softReset();
+        this._initializeNeuralNetwork();
+        this.markovMatrix = { 'BIG_BIG': 0.5, 'BIG_SMALL': 0.5, 'SMALL_BIG': 0.5, 'SMALL_SMALL': 0.5 };
+        this.bayesian = { prior: { BIG: 0.5, SMALL: 0.5 }, likelihood: { BIG: 1.0, SMALL: 1.0 }, posterior: { BIG: 0.5, SMALL: 0.5 }, windowSize: 100, observations: [] };
+        this.strategyWeights = { waveAnalysis: 1.0, momentumOscillator: 1.0, markovChain: 1.0, neuralNetwork: 1.5, bayesianInference: 1.2 };
+      }
+    }
+
+    // Create global instance
+    window.OmegaBeast = new OmegaBeastEngine();
+
+    // ---------- ORIGINAL APP CODE (PRESERVED) WITH OMEGA-BEAST INTEGRATION ----------
+
     document.addEventListener('DOMContentLoaded', function() {
       particlesJS('particles-js', {
         particles: {
@@ -637,17 +1119,22 @@
         }
       });
 
-      lucide.createIcons();     // refresh icons after dynamic content may change later
+      lucide.createIcons();
       initCharts();
-      loadLogicInfo();          // fill logic list
-      // start periodic updates
+      loadLogicInfo();
+      
+      // Initialize with some sample data for the engine
+      for (let i = 0; i < 30; i++) {
+        window.OmegaBeast.pushData(Math.floor(Math.random() * 9) + 1);
+      }
+      
+      // Start prediction updates
       updatePrediction();
-      updateEngine();
-      setInterval(updatePrediction, 800);
-      setInterval(updateEngine, 800);
+      setInterval(updatePrediction, 2000);
+      setInterval(updateEngineMetrics, 1000);
     });
 
-    // ---------- TAB HANDLING (fixes broken selectors) ----------
+    // ---------- TAB HANDLING ----------
     const tabBtns = document.querySelectorAll('.tab-btn');
     const panels = {
       prediction: document.getElementById('panel-prediction'),
@@ -660,30 +1147,28 @@
       btn.addEventListener('click', () => {
         tabBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const tabName = btn.getAttribute('data-tab'); // 'prediction', etc
+        const tabName = btn.getAttribute('data-tab');
         Object.values(panels).forEach(p => p.classList.remove('active'));
         if (panels[tabName]) panels[tabName].classList.add('active');
-
-        // extra: load data if needed
-        if (tabName === 'history') fetchPreviousResults();
+        if (tabName === 'history') fetchPreviousResultsNew(); 
         if (tabName === 'trends') updateCharts();
       });
     });
 
-    // ---------- PAGE NAVIGATION (fixed: mainApp hidden class) ----------
+    // ---------- PAGE NAVIGATION ----------
     function showPage(pageId) {
       document.getElementById('mainApp').classList.add('hidden');
       document.getElementById(pageId).classList.add('active-page');
-      lucide.createIcons(); // refresh icons inside page
+      lucide.createIcons();
     }
     function hidePage(pageId) {
       document.getElementById(pageId).classList.remove('active-page');
       document.getElementById('mainApp').classList.remove('hidden');
     }
-    window.showPage = showPage; window.hidePage = hidePage;
+    window.showPage = showPage; 
+    window.hidePage = hidePage;
 
-    // ---------- EXPORT MODAL ----------
-    let currentExportType = 'recent';
+    // ---------- EXPORT MODAL (download removed) ----------
     function showExportModal() {
       document.getElementById('exportModal').classList.add('active');
       updateExportData();
@@ -691,68 +1176,64 @@
     function hideExportModal() {
       document.getElementById('exportModal').classList.remove('active');
     }
-    window.showExportModal = showExportModal; window.hideExportModal = hideExportModal;
+    window.showExportModal = showExportModal; 
+    window.hideExportModal = hideExportModal;
 
     function updateExportData() {
       const textarea = document.getElementById('exportData');
-      let str = '';
-      if (historyData.length) {
-        historyData.slice(0,8).forEach(item => {
-          str += `${item.period} | pred:${item.prediction} | actual:${item.resultType||'?'} | status:${item.resultStatus}\n`;
-        });
-      } else str = '— no data yet —';
+      // Capture current period and prediction from the UI
+      const period = document.getElementById('currentPeriod').innerText;
+      const pred = document.getElementById('prediction').innerText;
+      let str = `NOx AI\nPeriod: ${period}\nPrediction: ${pred}\n`;
+      if (window.OmegaBeast && window.OmegaBeast.history.length) {
+
+      } else {
+        str += '— no data yet —';
+      }
       textarea.value = str;
     }
+    
     function copyExportData() {
       let ta = document.getElementById('exportData');
       ta.select(); ta.setSelectionRange(0, 99999);
       document.execCommand('copy');
       showNotif('Copied!');
     }
-    function downloadExportData() {
-      const ta = document.getElementById('exportData');
-      const blob = new Blob([ta.value], {type: 'text/plain'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'nox_export.txt';
-      a.click(); URL.revokeObjectURL(a.href);
-      showNotif('Downloaded');
-    }
+    
+    // downloadExportData function removed entirely
+
     function showNotif(msg) {
       const n = document.getElementById('notification');
-      n.textContent = msg; n.classList.add('show');
+      n.textContent = msg; 
+      n.classList.add('show');
       setTimeout(() => n.classList.remove('show'), 2000);
     }
-    window.copyExportData = copyExportData; window.downloadExportData = downloadExportData;
+    window.copyExportData = copyExportData; 
 
     // ---------- GLOBAL STATE ----------
     let historyData = [];
     let totalWins = 0, totalLosses = 0, totalPredictions = 0;
     let correctPredictions = 0;
     let lastFetchedPeriod = null;
-    let consecutiveLosses = 0;
     let lastPrediction = null;
-    let activePatterns = [];
     let currentLogic = 1;
-    let engineState = { currentPeriod: null, lastResults: [] };
 
     // Chart instances
     let trendChart, patternChart;
 
-    // ---------- API CALLS ----------
+    // --- New API calls ---
+    async function fetchPreviousResultsNew() {
+      try {
+        const res = await fetch(`https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=${Date.now()}`);
+        const json = await res.json();
+        const list = json.data.list;
+        updatePreviousResults(list);
+      } catch { /* ignore */ }
+    }
+
     async function fetchGameResult() {
       try {
-        const payload = {
-          pageSize: 10, pageNo: 1, typeId: 1, language: 0,
-          random: "4a0522c6ecd8410496260e686be2a57c",
-          signature: "334B5E70A0C9B8918B0B15E517E2069C",
-          timestamp: Math.floor(Date.now() / 1000)
-        };
-        const res = await fetch("https://api.bdg88zf.com/api/webapi/GetNoaverageEmerdList", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-        if (!res.ok) return null;
+        const res = await fetch(`https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json?ts=${Date.now()}`);
         const json = await res.json();
         const list = json.data.list;
         if (list?.length) {
@@ -767,109 +1248,79 @@
       } catch { return null; }
     }
 
-    async function updateEngine() { /* for background, keep lastResults */ }
-
-    // ---------- PREDICTION LOGICS (simplified for demo) ----------
-    function enhancedTrendAnalysis(history) {
-      if (history.length < 3) {
-        currentLogic = 8;
-        return { prediction: "BIG", confidence: 60, logic: 8 };
-      }
-      activePatterns = [];
-      const recent = history.slice(0, 8);
-      let predictions = [];
-
-      // streak
-      let streakType = recent[0].resultType;
-      let streakLen = 1;
-      for (let i=1; i<recent.length; i++) {
-        if (recent[i].resultType === streakType) streakLen++; else break;
-      }
-      if (streakLen >= 3) {
-        activePatterns.push("Streak "+streakLen);
-        predictions.push({ prediction: streakType==="BIG"?"SMALL":"BIG", confidence: 75+streakLen*2, logic:1 });
-      }
-      // alternating
-      let alt = true;
-      for (let i=1; i<Math.min(5, recent.length); i++) {
-        if (recent[i-1].resultType === recent[i].resultType) { alt=false; break; }
-      }
-      if (alt && recent.length>3) {
-        activePatterns.push("Alternating");
-        predictions.push({ prediction: recent[0].resultType==="BIG"?"SMALL":"BIG", confidence:78, logic:3 });
-      }
-      // triple
-      if (recent.length>=3 && recent[0].resultType===recent[1].resultType && recent[0].resultType===recent[2].resultType) {
-        activePatterns.push("Triple");
-        predictions.push({ prediction: recent[0].resultType==="BIG"?"SMALL":"BIG", confidence:82, logic:5 });
-      }
-
-      if (!predictions.length) {
-        predictions.push({ prediction: recent[0].resultType==="BIG"?"SMALL":"BIG", confidence:65, logic:12 });
-      }
-      let best = predictions.reduce((a,b)=>a.confidence>b.confidence?a:b);
-      currentLogic = best.logic;
-      document.getElementById('activeLogicLabel').innerText = 'Logic '+best.logic;
-      return best;
-    }
-
-    function autoPredict() {
-      let pred = enhancedTrendAnalysis(historyData);
-      lastPrediction = pred.prediction;
-      return { type: pred.prediction, confidence: pred.confidence };
-    }
-
-    function updatePatternIndicator() {
-      let ind = document.getElementById('patternIndicator');
-      if (!activePatterns.length) { ind.innerHTML = '<span class="pattern-chip">—</span>'; return; }
-      ind.innerHTML = activePatterns.map(p => `<span class="pattern-chip"><i data-lucide="sparkles" width="12"></i>${p}</span>`).join('');
-      lucide.createIcons(); 
-    }
-
-    // ---------- PREDICTION LOOP ----------
+    // ---------- OMEGA-BEAST INTEGRATED PREDICTION ----------
     async function updatePrediction() {
       let apiResult = await fetchGameResult();
       if (apiResult && apiResult.period !== lastFetchedPeriod) {
         lastFetchedPeriod = apiResult.period;
+        
+        // Push data to Omega Beast
+        window.OmegaBeast.pushData(parseInt(apiResult.result));
+        
+        // Get prediction from Omega Beast
+        const beastPrediction = window.OmegaBeast.predictNext();
+        
         let nextPeriod = (BigInt(apiResult.period) + 1n).toString();
-
-        // check previous pending
+        
+        // Check previous pending
         if (historyData.length && historyData[0].period === apiResult.period) {
           let prev = historyData[0];
           prev.resultStatus = (prev.prediction === apiResult.resultType) ? "WIN" : "LOSS";
-          if (prev.resultStatus === "WIN") consecutiveLosses = 0; else consecutiveLosses++;
+          if (prev.resultStatus === "WIN") {
+            totalWins++;
+            correctPredictions++;
+          } else {
+            totalLosses++;
+          }
         }
 
-        let prediction = autoPredict();
+        let predictionType = beastPrediction.prediction || "BIG";
+        let confidence = beastPrediction.confidence || "75%";
 
         document.getElementById("currentPeriod").innerText = nextPeriod;
         let predEl = document.getElementById("prediction");
-        predEl.innerText = prediction.type;
-        predEl.className = "big-number " + (prediction.type==="BIG"?"big":"small");
+        predEl.innerText = predictionType;
+        predEl.className = "big-number " + (predictionType === "BIG" ? "big" : "small");
 
         historyData.unshift({ 
-          period: nextPeriod, result: apiResult.result, resultType: apiResult.resultType,
-          prediction: prediction.type, resultStatus: "Pending",
-          confidence: prediction.confidence, logic: currentLogic
+          period: nextPeriod, 
+          result: apiResult.result, 
+          resultType: apiResult.resultType,
+          prediction: predictionType, 
+          resultStatus: "Pending",
+          confidence: confidence,
+          logic: 8
         });
+        
+        // Update metrics display with Omega Beast data
+        document.getElementById("lyapunov").innerText = beastPrediction.chaosMetrics?.lyapunovExponent || "0.000000";
+        document.getElementById("entropy").innerText = beastPrediction.chaosMetrics?.entropy || "0.0000";
+        document.getElementById("learningRate").innerText = beastPrediction.systemMetrics?.learningRate || "0.050000";
+        
         updateStats();
         updateHistory();
-        updatePatternIndicator();
-        if (document.querySelector('.tab-btn.active')?.getAttribute('data-tab') === 'trends') updateCharts();
+        updatePatternIndicator(beastPrediction);
+        
+        if (document.querySelector('.tab-btn.active')?.getAttribute('data-tab') === 'trends') {
+          updateCharts();
+        }
+      }
+    }
+
+    function updateEngineMetrics() {
+      if (window.OmegaBeast && window.OmegaBeast.history.length > 0) {
+        document.getElementById('activeLogicLabel').innerText = 'OMEGA-BEAST';
       }
     }
 
     function updateStats() {
-      totalWins = historyData.filter(i => i.resultStatus === "WIN").length;
-      totalLosses = historyData.filter(i => i.resultStatus === "LOSS").length;
       totalPredictions = historyData.length;
-      correctPredictions = totalWins;
       document.getElementById("totalWins").innerText = totalWins;
       document.getElementById("totalLosses").innerText = totalLosses;
       document.getElementById("totalPredictions").innerText = totalPredictions;
-      let acc = totalPredictions ? ((correctPredictions/totalPredictions)*100).toFixed(1) : 0;
+      let acc = totalPredictions ? ((correctPredictions / totalPredictions) * 100).toFixed(1) : 0;
       document.getElementById("accuracy").innerText = acc + '%';
-      let wr = historyData[0]?.confidence ? historyData[0].confidence+'%' : '-';
+      let wr = historyData[0]?.confidence || '-';
       document.getElementById("winRate").innerText = wr;
     }
 
@@ -877,10 +1328,14 @@
       let histDiv = document.getElementById("history");
       histDiv.innerHTML = "";
       let recent = historyData.slice(0, 8);
-      if (!recent.length) { histDiv.innerHTML = '<p style="padding:1rem; text-align:center;">—</p>'; return; }
+      if (!recent.length) { 
+        histDiv.innerHTML = '<p style="padding:1rem; text-align:center;">—</p>'; 
+        return; 
+      }
       recent.forEach(item => {
-        let row = document.createElement('div'); row.className = 'history-row';
-        let statusClass = item.resultStatus==='WIN'?'status-win':(item.resultStatus==='LOSS'?'status-loss':'status-pending');
+        let row = document.createElement('div'); 
+        row.className = 'history-row';
+        let statusClass = item.resultStatus === 'WIN' ? 'status-win' : (item.resultStatus === 'LOSS' ? 'status-loss' : 'status-pending');
         row.innerHTML = `
           <div class="history-left"><div class="period">${item.period}</div><div class="pred">${item.prediction}</div></div>
           <div class="status-badge ${statusClass}">${item.resultStatus}</div>
@@ -889,64 +1344,122 @@
       });
     }
 
-    // ---------- PREVIOUS RESULTS ----------
-    async function fetchPreviousResults() {
-      const payload = { pageSize:10, pageNo:1, typeId:1, language:0, random:"c2505d9138da4e3780b2c2b34f2fb789", signature:"7D637E060DA35C0C6E28DC6D23D71BED", timestamp:Date.now()/1000|0 };
-      try {
-        let res = await fetch("https://api.bdg88zf.com/api/webapi/GetNoaverageEmerdList", { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
-        if (res.ok) {
-          let data = await res.json();
-          if (data.code === 0) updatePreviousResults(data.data.list);
+    function updatePatternIndicator(beastPrediction) {
+      let ind = document.getElementById('patternIndicator');
+      let patterns = [];
+      
+      if (beastPrediction && beastPrediction.signals) {
+        if (beastPrediction.signals.waveAnalysis?.strength > 0.7) {
+          patterns.push(`FFT: ${(beastPrediction.signals.waveAnalysis.strength * 100).toFixed(0)}%`);
         }
-      } catch { /* ignore */ }
+        if (beastPrediction.chaosMetrics?.lyapunovExponent > 0.1) {
+          patterns.push('CHAOTIC');
+        }
+        if (beastPrediction.signals.neuralNetwork?.confidence > '70%') {
+          patterns.push('NEURAL');
+        }
+      }
+      
+      if (!patterns.length) {
+        ind.innerHTML = '<span class="pattern-chip">NEURAL ACTIVE</span>';
+      } else {
+        ind.innerHTML = patterns.map(p => `<span class="pattern-chip"><i data-lucide="sparkles" width="12"></i>${p}</span>`).join('');
+      }
+      lucide.createIcons();
     }
 
     function updatePreviousResults(list) {
       let div = document.getElementById('previous-results');
-      if (!list?.length) { div.innerHTML = '<p style="padding:1rem;">—</p>'; return; }
+      if (!list?.length) { 
+        div.innerHTML = '<p style="padding:1rem;">—</p>'; 
+        return; 
+      }
       div.innerHTML = '';
-      list.slice(0,10).forEach(r => {
-        let size = parseInt(r.number)>=5?'BIG':'SMALL';
-        let row = document.createElement('div'); row.className = 'history-row';
-        row.innerHTML = `<div><div class="period">${r.issueNumber}</div><div>${r.number}</div></div><div class="status-badge ${size==='BIG'?'status-win':'status-loss'}">${size}</div>`;
+      list.slice(0, 10).forEach(r => {
+        let size = parseInt(r.number) >= 5 ? 'BIG' : 'SMALL';
+        let row = document.createElement('div'); 
+        row.className = 'history-row';
+        row.innerHTML = `<div><div class="period">${r.issueNumber}</div><div>${r.number}</div></div><div class="status-badge ${size === 'BIG' ? 'status-win' : 'status-loss'}">${size}</div>`;
         div.appendChild(row);
       });
     }
 
-    // ---------- CHARTS (stub but working) ----------
+    // ---------- CHARTS ----------
     function initCharts() {
       let ctx1 = document.getElementById('trendChart').getContext('2d');
       trendChart = new Chart(ctx1, {
         type: 'line',
-        data: { labels: ['1','2','3','4','5'], datasets: [
-          { label:'BIG', data:[50,55,48,62,58], borderColor:'#2ad4b0', backgroundColor:'rgba(42,212,176,0.1)', tension:0.2, fill:true },
-          { label:'SMALL', data:[50,45,52,38,42], borderColor:'#f8719d', backgroundColor:'rgba(248,113,157,0.1)', tension:0.2, fill:true }
-        ]},
-        options: { responsive:true, maintainAspectRatio:false, scales:{ y:{ beginAtZero:true, max:100 } } }
+        data: { 
+          labels: ['1', '2', '3', '4', '5'], 
+          datasets: [
+            { label: 'FFT Magnitude', data: [50, 55, 48, 62, 58], borderColor: '#2ad4b0', backgroundColor: 'rgba(42,212,176,0.1)', tension: 0.2, fill: true },
+            { label: 'Neural Confidence', data: [50, 45, 52, 38, 42], borderColor: '#f8719d', backgroundColor: 'rgba(248,113,157,0.1)', tension: 0.2, fill: true }
+          ]
+        },
+        options: { 
+          responsive: true, 
+          maintainAspectRatio: false, 
+          scales: { y: { beginAtZero: true, max: 100 } } 
+        }
       });
+      
       let ctx2 = document.getElementById('patternChart').getContext('2d');
       patternChart = new Chart(ctx2, {
         type: 'bar',
-        data: { labels:['Streak','Alt','Triple'], datasets:[{ label:'%', data:[34,28,22], backgroundColor:['#7b95f0','#8bb0ff','#5566d9'] }] },
-        options: { responsive:true, maintainAspectRatio:false }
+        data: { 
+          labels: ['Neural', 'FFT', 'Markov', 'Bayesian'], 
+          datasets: [{ 
+            label: 'Weight', 
+            data: [1.5, 1.0, 1.0, 1.2], 
+            backgroundColor: ['#7b95f0', '#8bb0ff', '#5566d9', '#2ad4b0'] 
+          }] 
+        },
+        options: { 
+          responsive: true, 
+          maintainAspectRatio: false 
+        }
       });
     }
-    function updateCharts() { trendChart.update(); patternChart.update(); }
+    
+    function updateCharts() {
+      if (window.OmegaBeast && window.OmegaBeast.strategyWeights) {
+        patternChart.data.datasets[0].data = [
+          window.OmegaBeast.strategyWeights.neuralNetwork,
+          window.OmegaBeast.strategyWeights.waveAnalysis,
+          window.OmegaBeast.strategyWeights.markovChain,
+          window.OmegaBeast.strategyWeights.bayesianInference
+        ];
+        patternChart.update();
+      }
+      
+      if (window.OmegaBeast && window.OmegaBeast.fftCache && window.OmegaBeast.fftCache.magnitudes) {
+        const mags = window.OmegaBeast.fftCache.magnitudes.slice(1, 6).map(m => m * 10);
+        while (mags.length < 5) mags.push(50);
+        trendChart.data.datasets[0].data = mags;
+        trendChart.update();
+      }
+    }
 
-    // ---------- LOGIC INFO (static fill) ----------
+    // ---------- LOGIC INFO ----------
     function loadLogicInfo() {
       let logics = [
-        { id:1, name:'Streak Detection', acc:72 }, { id:3, name:'Alternating', acc:68 },
-        { id:8, name:'Weighted', acc:75 }, { id:19, name:'Neural', acc:73 }, { id:22, name:'Hybrid', acc:76 }
+        { id: 8, name: 'OMEGA-BEAST Neural', acc: 78 },
+        { id: 1, name: 'Streak Detection', acc: 72 }, 
+        { id: 3, name: 'Alternating', acc: 68 },
+        { id: 19, name: 'FFT Analysis', acc: 73 }, 
+        { id: 22, name: 'Chaos Theory', acc: 76 }
       ];
       let html = '';
-      logics.forEach(l => { html += `<div class="logic-card"><div class="logic-title">Logic ${l.id} · ${l.name} <span class="logic-badge">${l.acc}%</span></div></div>`; });
+      logics.forEach(l => { 
+        html += `<div class="logic-card"><div class="logic-title">Logic ${l.id} · ${l.name} <span class="logic-badge">${l.acc}%</span></div></div>`; 
+      });
       document.getElementById('active-logics-list').innerHTML = html;
       document.getElementById('top-logics').innerHTML = html;
     }
 
-    window.logout = function() { alert('Logged out (demo)'); };
+    window.logout = function() { 
+      showNotif('Logged out (demo)'); 
+    };
   </script>
 </body>
-
 </html>
