@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,232 +7,400 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --background-dark: #0A091A; --card-background: rgba(28, 26, 58, 0.6); --primary-accent: #8A2BE2;
-            --text-light: #F0F0F8; --text-secondary: #A0A0B8; --text-green: #2ecc71; --text-red: #e74c3c;
-            --text-yellow: #f1c40f; --border-color: rgba(138, 43, 226, 0.2);
+            --bg: #0A091A;
+            --card: rgba(28, 26, 58, 0.6);
+            --primary: #8A2BE2;
+            --text: #F0F0F8;
+            --text-dim: #A0A0B8;
+            --green: #2ecc71;
+            --red: #e74c3c;
+            --yellow: #f1c40f;
+            --border: rgba(138, 43, 226, 0.2);
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         html, body { overscroll-behavior: none; }
         body {
-            font-family: 'Poppins', sans-serif; display: flex; align-items: center; justify-content: flex-start; flex-direction: column;
-            background-color: var(--background-dark); margin: 0; color: var(--text-light); min-height: 100vh;
-            -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; padding: 20px; box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 16px;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
         }
-        .hidden { display: none !important; }
-        .container {
-            background: var(--card-background); backdrop-filter: blur(12px); border: 1px solid var(--border-color); padding: 25px; border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); text-align: center; width: 100%; max-width: 400px;
-            animation: fadeIn 0.6s ease-out; box-sizing: border-box; margin-bottom: 20px;
+        .card {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            padding: 24px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            animation: fadeIn 0.6s ease-out;
         }
-        h2 { font-size: 1.5em; font-weight: 700; margin: 0 0 25px 0; color: var(--text-light); letter-spacing: 1px; }
-        .input-field {
-            width: 100%; text-align: center; caret-color: var(--primary-accent);
-            background-color: var(--background-dark); border: 2px solid var(--border-color); color: var(--text-light);
-            padding: 12px; border-radius: 12px; font-size: 1em; margin-bottom: 15px; transition: all 0.2s; box-sizing: border-box;
+        .card + .card { margin-top: 20px; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+        /* Header */
+        .header { margin-bottom: 20px; }
+        .header h1 { font-size: 1.5em; font-weight: 700; letter-spacing: 1px; }
+        .header .meta { font-size: 0.7em; color: var(--text-dim); margin-top: 4px; }
+        .header .meta .accent { color: var(--primary); font-weight: 600; }
+
+        /* Stats */
+        .stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 12px; }
+        .stat-item { border-radius: 10px; padding: 8px 4px; }
+        .stat-item .num { font-size: 1.1em; font-weight: 700; display: block; }
+        .stat-item .lbl { font-size: 0.65em; color: var(--text-dim); }
+        .stat-green { background: rgba(46,204,113,0.12); }
+        .stat-green .num { color: var(--green); }
+        .stat-red { background: rgba(231,76,60,0.12); }
+        .stat-red .num { color: var(--red); }
+        .stat-yellow { background: rgba(241,196,15,0.12); }
+        .stat-yellow .num { color: var(--yellow); }
+
+        /* Grid */
+        .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .grid2 + .grid2 { margin-top: 12px; }
+        .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .input-area { background: rgba(0,0,0,0.2); padding: 16px; border-radius: 16px; }
+
+        /* Display box */
+        .display-box {
+            width: 100%;
+            height: 4.5rem;
+            font-size: 2.2em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            border-radius: 12px;
+            border: 1px solid rgba(138,43,226,0.1);
         }
-        .input-field:focus { outline: none; border-color: var(--primary-accent); box-shadow: 0 0 15px var(--primary-accent); }
+        .box-label { font-size: 0.6em; color: var(--text-dim); margin-top: 6px; }
+
+        /* Input */
+        .input-box {
+            width: 100%;
+            height: 4.5rem;
+            text-align: center;
+            font-size: 2.2em;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            caret-color: var(--primary);
+            background: var(--bg);
+            border: 2px solid var(--border);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 0;
+            transition: all 0.2s;
+        }
+        .input-box:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 15px var(--primary); }
+        .input-box::placeholder { color: rgba(160,160,184,0.4); }
+
+        /* Button */
         .btn-glow {
-            width: 100%; font-size: 1.2em; font-weight: 700; color: white; border: none; border-radius: 12px; cursor: pointer;
-            margin-top: 10px; text-transform: uppercase; letter-spacing: 1.5px; padding: 16px 30px;
-            background: linear-gradient(45deg, var(--primary-accent), #A020F0);
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5); transition: all 0.3s ease-out;
+            width: 100%;
+            font-size: 1.1em;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            margin-top: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 16px 30px;
+            background: linear-gradient(45deg, var(--primary), #A020F0);
+            box-shadow: 0 0 20px rgba(138,43,226,0.5);
+            transition: all 0.3s ease-out;
         }
-        .btn-glow:hover:not(:disabled) { transform: translateY(-3px) scale(1.02); box-shadow: 0 0 30px rgba(138, 43, 226, 0.7); }
+        .btn-glow:hover:not(:disabled) { transform: translateY(-3px) scale(1.02); box-shadow: 0 0 30px rgba(138,43,226,0.7); }
+        .btn-glow:active:not(:disabled) { transform: scale(0.97); }
         .btn-glow:disabled { background: #2a284d; color: #6a6a8a; cursor: not-allowed; box-shadow: none; transform: none; }
-        #upcomingPeriodDisplay { font-size: 1.1em; color: var(--text-secondary); margin-top: 25px; margin-bottom: 5px; font-weight: 600; letter-spacing: 1px; }
-        #predictionResultBox { font-size: 3.5em; font-weight: 700; color: var(--text-green); min-height: 60px; display: flex; align-items: center; justify-content: center; text-transform: uppercase; }
-        .win-loss-buttons { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-        .win-loss-buttons button { font-weight: 600; padding: 12px 10px; border-radius: 10px; color: white; border: none; cursor: pointer; transition: transform 0.2s; }
-        .win-loss-buttons button:hover { transform: translateY(-2px); }
-        .win { background-color: var(--text-green); }
-        .loss { background-color: var(--text-red); }
-        .jackpot { background: linear-gradient(45deg, #f1c40f, #e67e22); }
-        .history-list { max-height: 200px; overflow-y: auto; padding-right: 10px; }
-        .history-list::-webkit-scrollbar { width: 6px; }
+
+        /* Prediction display */
+        .next-period { font-size: 0.75em; color: var(--text-dim); font-weight: 500; margin-top: 20px; letter-spacing: 0.5px; }
+        .next-period span { color: var(--text); }
+        .prediction {
+            font-size: 3em;
+            font-weight: 700;
+            margin: 8px 0 4px;
+            transition: color 0.3s;
+            min-height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Outcome buttons */
+        .outcome-btns { margin-top: 20px; animation: fadeIn 0.3s ease-out; }
+        .outcome-btns button {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.85em;
+            padding: 12px 10px;
+            border-radius: 12px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .outcome-btns button:hover { transform: translateY(-2px); }
+        .outcome-btns button:active { transform: scale(0.95); }
+        .btn-win { background: var(--green); }
+        .btn-loss { background: var(--red); }
+        .btn-jackpot { background: linear-gradient(45deg, var(--yellow), #e67e22); }
+
+        /* History */
+        .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .history-header h3 { font-size: 0.85em; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+        .clear-btn { background: none; border: none; color: rgba(231,76,60,0.7); font-size: 0.7em; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 500; }
+        .clear-btn:hover { color: var(--red); }
+        .history-list { max-height: 210px; overflow-y: auto; }
+        .history-list::-webkit-scrollbar { width: 4px; }
         .history-list::-webkit-scrollbar-track { background: transparent; }
-        .history-list::-webkit-scrollbar-thumb { background: var(--primary-accent); border-radius: 10px; }
-        .history-entry { background: transparent; padding: 12px 5px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
+        .history-list::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+        .history-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 8px;
+            border-bottom: 1px solid rgba(138,43,226,0.1);
+            font-size: 0.8em;
+        }
         .history-entry:last-child { border-bottom: none; }
-        .history-outcome { text-shadow: 0 0 5px; font-size: 0.9em; padding: 4px 10px; border-radius: 8px; color: white; }
-        .grid { display: grid; }
-        .grid-cols-2 { grid-template-columns: 1fr 1fr; }
-        .gap-4 { gap: 16px; }
-        .mt-4 { margin-top: 16px; }
-        .mt-1 { margin-top: 4px; }
-        .mb-2 { margin-bottom: 8px; }
-        .mb-6 { margin-bottom: 24px; }
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .justify-center { justify-content: center; }
-        .text-center { text-align: center; }
-        .font-bold { font-weight: 700; }
-        .text-xs { font-size: 0.75em; }
-        .text-sm { font-size: 0.875em; }
-        .text-lg { font-size: 1.125em; }
-        .text-xl { font-size: 1.25em; }
-        .text-5xl { font-size: 3em; }
-        .text-6xl { font-size: 3.75em; }
-        .w-full { width: 100%; }
-        .h-20 { height: 5rem; }
-        .p-0 { padding: 0; }
-        .p-4 { padding: 16px; }
-        .m-0 { margin: 0; }
-        .my-2 { margin-top: 8px; margin-bottom: 8px; }
-        .rounded-lg { border-radius: 8px; }
-        .rounded-xl { border-radius: 12px; }
-        .space-y-2 > * + * { margin-top: 8px; }
-        .bg-dark { background-color: var(--background-dark); }
-        .bg-black-20 { background-color: rgba(0,0,0,0.2); }
-        .text-accent { color: var(--primary-accent); }
-        .text-secondary { color: var(--text-secondary); }
-        .text-red { color: #f87171; }
-        .text-green { color: var(--text-green); }
+        .history-entry .info { color: var(--text-dim); font-weight: 500; }
+        .history-entry .info strong { color: var(--text); }
+        .history-badge {
+            font-size: 0.7em;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+        .empty-state { text-align: center; color: var(--text-dim); padding: 32px 0; font-size: 0.75em; }
+        .hidden { display: none !important; }
+        .footer { font-size: 0.55em; color: rgba(160,160,184,0.35); margin-top: 20px; padding-bottom: 16px; }
     </style>
 </head>
 <body>
 
-    <div id="main-content">
-        <div class="container tool-container">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl m-0">NOx AI<span id="strategy-version" class="text-xs text-accent">(V1)</span></h2>
-            </div>
-            <div class="bg-black-20 p-4 rounded-xl">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="text-center">
-                        <div id="box1" class="w-full h-20 text-5xl flex items-center justify-center font-bold bg-dark rounded-lg">?</div>
-                        <p class="text-xs mt-1 text-secondary">Last Period</p>
-                    </div>
-                    <input type="number" id="box2" class="w-full h-20 text-5xl text-center font-bold bg-dark rounded-lg input-field p-0" oninput="this.value=this.value.slice(0,1)" placeholder="?">
-                </div>
-                <div class="grid grid-cols-2 gap-4 mt-4">
-                    <div class="text-center">
-                        <div id="box3" class="w-full h-20 text-5xl flex items-center justify-center font-bold bg-dark rounded-lg">?</div>
-                        <p class="text-xs mt-1 text-secondary">Previous Period</p>
-                    </div>
-                    <input type="number" id="box4" class="w-full h-20 text-5xl text-center font-bold bg-dark rounded-lg input-field p-0" oninput="this.value=this.value.slice(0,1)" placeholder="?">
-                </div>
-            </div>
-            <button id="predictButton" class="btn-glow" onclick="predictResult()">PREDICT</button>
-            <div id="upcomingPeriodDisplay" class="text-lg text-secondary" style="margin-top:20px;font-weight:600"></div>
-            <div id="predictionResultBox" class="text-6xl font-bold text-green my-2" style="min-height:60px;display:flex;align-items:center;justify-content:center">---</div>
-            <div id="winLossButtons" class="win-loss-buttons hidden">
-                <button class="win" onclick="handleOutcome('win')">WIN</button>
-                <button class="loss" onclick="handleOutcome('loss')">LOSS</button>
-                <button class="jackpot" onclick="handleOutcome('jackpot')">JACKPOT</button>
-            </div>
-        </div>
+    <!-- Header -->
+    <div class="header">
+        <h1>NOx AI</h1>
+        <p class="meta"><span class="accent" id="strategyLabel"></span><span id="winRateLabel" style="font-weight:600"></span></p>
+    </div>
 
-        <div class="container">
-            <div class="flex justify-between items-center mb-2">
-                <h3 class="text-lg font-bold" style="margin:0">History</h3>
-                <button id="clearHistoryBtn" class="text-xs text-red" style="background:none;border:none;cursor:pointer;color:#f87171" onclick="clearHist()">Clear</button>
-            </div>
-            <div id="history-list" class="text-sm space-y-2 history-list"></div>
+    <!-- Stats -->
+    <div class="card" id="statsCard" style="display:none">
+        <div class="stats">
+            <div class="stat-item stat-green"><span class="num" id="statWins">0</span><span class="lbl">Wins</span></div>
+            <div class="stat-item stat-red"><span class="num" id="statLosses">0</span><span class="lbl">Losses</span></div>
+            <div class="stat-item stat-yellow"><span class="num" id="statJackpots">0</span><span class="lbl">Jackpots</span></div>
         </div>
     </div>
 
-    <script>
-        const BASE_PERIOD = 20260629100010437n;
-        const BASE_TIME_STRING = '2026-06-29T12:47:00.000+05:30';
-        const MAX_HISTORY_LENGTH = 20;
+    <!-- Prediction Tool -->
+    <div class="card">
+        <div class="input-area">
+            <div class="grid2">
+                <div>
+                    <div class="display-box" id="box1">?</div>
+                    <p class="box-label">Previous Period</p>
+                </div>
+                <div>
+                    <input type="number" id="box2" class="input-box" placeholder="?" oninput="this.value=this.value.slice(0,1)">
+                    <p class="box-label">Previous Result</p>
+                </div>
+            </div>
+            <div class="grid2">
+                <div>
+                    <div class="display-box" id="box3">?</div>
+                    <p class="box-label">Previous Period</p>
+                </div>
+                <div>
+                    <input type="number" id="box4" class="input-box" placeholder="?" oninput="this.value=this.value.slice(0,1)">
+                    <p class="box-label">Previous Result</p>
+                </div>
+            </div>
+        </div>
 
-        const box1Display = document.getElementById('box1');
-        const box3Display = document.getElementById('box3');
-        const box2Input = document.getElementById('box2');
-        const box4Input = document.getElementById('box4');
-        const predictButton = document.getElementById('predictButton');
-        const upcomingPeriodDisplay = document.getElementById('upcomingPeriodDisplay');
-        const predictionResultBox = document.getElementById('predictionResultBox');
-        const winLossButtons = document.getElementById('winLossButtons');
-        const strategyVersionDisplay = document.getElementById('strategy-version');
-        const historyListDiv = document.getElementById('history-list');
+        <button id="predictBtn" class="btn-glow" onclick="predict()">PREDICT</button>
 
-        let currentStrategy = 'v1', currentPeriod = 0n, history = [], periodWhenPredictionWasMade = 0n;
+        <p class="next-period">Period: <span id="nextPeriod"></span></p>
+        <div class="prediction" id="predictionResult">---</div>
 
-        function vibrate(d = 40) { navigator.vibrate?.(d); }
+        <div id="outcomeArea" class="outcome-btns hidden">
+            <div class="grid3">
+                <button class="btn-win" onclick="recordOutcome('win')">✓ WIN</button>
+                <button class="btn-loss" onclick="recordOutcome('loss')">✗ LOSS</button>
+                <button class="btn-jackpot" onclick="recordOutcome('jackpot')">★ JACKPOT</button>
+            </div>
+        </div>
+    </div>
 
-        function updateUiWithPeriod(p) {
-            currentPeriod = p;
-            const pStr = String(p), prevPStr = String(p - 1n);
-            box1Display.textContent = pStr.slice(-1);
-            box3Display.textContent = prevPStr.slice(-1);
-            const newUpPeriod = String(p + 1n);
-            upcomingPeriodDisplay.textContent = "Next Period: " + newUpPeriod;
-            if (sessionStorage.getItem('predicted_period') !== newUpPeriod) {
-                predictButton.disabled = false; predictButton.textContent = "PREDICT";
-            } else {
-                predictButton.disabled = true; predictButton.textContent = "PREDICTED";
-            }
-        }
+    <!-- History -->
+    <div class="card">
+        <div class="history-header">
+            <h3>History</h3>
+            <button class="clear-btn" id="clearBtn" onclick="clearHistory()" style="display:none">Clear All</button>
+        </div>
+        <div class="history-list" id="historyList">
+            <div class="empty-state">No predictions yet</div>
+        </div>
+    </div>
 
-        function calculateCurrentPeriod() {
-            const baseTime = new Date(BASE_TIME_STRING);
-            const currentTime = new Date();
-            const minutesPassed = Math.floor((currentTime.getTime() - baseTime.getTime()) / 60000);
-            const calculatedPeriod = BASE_PERIOD + BigInt(minutesPassed);
-            if (currentPeriod !== calculatedPeriod) updateUiWithPeriod(calculatedPeriod);
-        }
+    <p class="footer"></p>
 
-        function predictResult() {
-            vibrate(70);
-            const b1 = parseInt(box1Display.textContent), b2 = parseInt(box2Input.value),
-                  b3 = parseInt(box3Display.textContent), b4 = parseInt(box4Input.value);
-            if ([b1, b2, b3, b4].some(isNaN)) { predictionResultBox.textContent = "- - -"; return; }
-            periodWhenPredictionWasMade = currentPeriod + 1n;
-            sessionStorage.setItem('predicted_period', String(periodWhenPredictionWasMade));
-            const reduce = n => { while (n >= 10) n = String(n).split('').reduce((s, d) => s + parseInt(d), 0); return n; };
-            const v1Digit = reduce(Math.abs(b1 - b2) + Math.abs(b3 - b4));
-            let predTxt = "";
-            if (currentStrategy === 'v1') {
-                predTxt = (v1Digit >= 5 ? "BIG " : "SMALL ") + v1Digit;
-            } else {
-                const isV1Big = v1Digit >= 5;
-                let v2Num = isV1Big ? (v1Digit % 2 !== 0 ? 2 : 3) : (v1Digit % 2 !== 0 ? 8 : 7);
-                predTxt = (isV1Big ? "SMALL " : "BIG ") + v2Num;
-            }
-            predictionResultBox.textContent = predTxt;
-            box2Input.value = ''; box4Input.value = '';
-            predictButton.disabled = true; predictButton.textContent = "PREDICTED";
-            winLossButtons.classList.remove('hidden');
-        }
+<script>
+const BASE_PERIOD = 20260629100010437n;
+const BASE_TIME = new Date('2026-06-29T12:47:00.000+05:30').getTime();
+const MAX_HISTORY = 20;
 
-        function handleOutcome(o) {
-            vibrate();
-            const p = String(periodWhenPredictionWasMade);
-            history.unshift({ period: p.slice(-4), prediction: predictionResultBox.textContent, outcome: o.toUpperCase() });
-            if (history.length > MAX_HISTORY_LENGTH) history.pop();
-            saveHistory(); renderHistory();
-            if (o === 'loss') {
-                currentStrategy = currentStrategy === 'v1' ? 'v2' : 'v1';
-                strategyVersionDisplay.textContent = '(' + currentStrategy.toUpperCase() + ')';
-            }
-            winLossButtons.classList.add('hidden');
-            predictButton.textContent = "PREDICTED";
-            predictionResultBox.textContent = "---";
-        }
+let currentPeriod = 0n, strategy = 'v1', history = [], predPeriod = 0n;
 
-        function renderHistory() {
-            historyListDiv.innerHTML = '';
-            if (history.length === 0) {
-                historyListDiv.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:16px 0">No result found</div>';
-                return;
-            }
-            history.forEach(e => {
-                const d = document.createElement('div'); d.className = 'history-entry';
-                const color = e.outcome === 'WIN' ? 'var(--text-green)' : e.outcome === 'LOSS' ? 'var(--text-red)' : 'var(--text-yellow)';
-                d.innerHTML = '<span>' + e.period + ' - ' + e.prediction + '</span><span class="history-outcome" style="color:' + color + '">' + e.outcome + '</span>';
-                historyListDiv.appendChild(d);
-            });
-        }
+const $ = id => document.getElementById(id);
 
-        function saveHistory() { localStorage.setItem('predictionHistory_v4', JSON.stringify(history)); }
-        function loadHistory() { const h = localStorage.getItem('predictionHistory_v4'); if (h) history = JSON.parse(h); renderHistory(); }
-        function clearHist() { vibrate(); if (confirm("Clear history?")) { history = []; localStorage.removeItem('predictionHistory_v4'); renderHistory(); } }
+function vibrate(d=40) { navigator.vibrate?.(d); }
 
-        calculateCurrentPeriod();
-        setInterval(calculateCurrentPeriod, 1000);
-        loadHistory();
-    </script>
+function calcPeriod() {
+    const mins = Math.floor((Date.now() - BASE_TIME) / 60000);
+    const p = BASE_PERIOD + BigInt(mins);
+    if (currentPeriod !== p) {
+        currentPeriod = p;
+        $('box1').textContent = String(p).slice(-1);
+        $('box3').textContent = String(p - 1n).slice(-1);
+        $('nextPeriod').textContent = String(p + 1n);
+        const isPredicted = sessionStorage.getItem('predicted_period') === String(p + 1n);
+        $('predictBtn').disabled = isPredicted;
+        $('predictBtn').textContent = isPredicted ? '✓ PREDICTED' : '⚡ PREDICT';
+    }
+}
+
+function predict() {
+    vibrate(70);
+    const b1 = parseInt($('box1').textContent);
+    const b2 = parseInt($('box2').value);
+    const b3 = parseInt($('box3').textContent);
+    const b4 = parseInt($('box4').value);
+
+    if ([b1,b2,b3,b4].some(isNaN)) {
+        $('predictionResult').textContent = '- - -';
+        $('predictionResult').style.color = 'var(--text-dim)';
+        return;
+    }
+
+    predPeriod = currentPeriod + 1n;
+    sessionStorage.setItem('predicted_period', String(predPeriod));
+
+    const reduce = n => { while(n>=10) n = String(n).split('').reduce((s,d) => s+parseInt(d), 0); return n; };
+    const v1Digit = reduce(Math.abs(b1-b2) + Math.abs(b3-b4));
+
+    let predTxt = '';
+    // OPPOSITE / INVERTED prediction logic
+    if (strategy === 'v1') {
+        predTxt = (v1Digit >= 5 ? 'SMALL ' : 'BIG ') + v1Digit;
+    } else {
+        const isV1Big = v1Digit >= 5;
+        const v2Num = isV1Big ? (v1Digit%2!==0 ? 8 : 7) : (v1Digit%2!==0 ? 2 : 3);
+        predTxt = (isV1Big ? 'BIG ' : 'SMALL ') + v2Num;
+    }
+
+    const el = $('predictionResult');
+    el.textContent = predTxt;
+    el.style.color = predTxt.startsWith('BIG') ? 'var(--green)' : 'var(--red)';
+
+    $('box2').value = '';
+    $('box4').value = '';
+    $('predictBtn').disabled = true;
+    $('predictBtn').textContent = '✓ PREDICTED';
+    $('outcomeArea').classList.remove('hidden');
+}
+
+function recordOutcome(outcome) {
+    vibrate();
+    const p = String(predPeriod);
+    history.unshift({
+        period: p.slice(-4),
+        prediction: $('predictionResult').textContent,
+        outcome: outcome.toUpperCase()
+    });
+    if (history.length > MAX_HISTORY) history.pop();
+    saveHistory();
+    renderHistory();
+    updateStats();
+
+    if (outcome === 'loss') {
+        strategy = strategy === 'v1' ? 'v2' : 'v1';
+        $('strategyLabel').textContent = strategy.toUpperCase();
+    }
+
+    $('outcomeArea').classList.add('hidden');
+    $('predictionResult').textContent = '---';
+    $('predictionResult').style.color = 'var(--text-dim)';
+}
+
+function updateStats() {
+    const wins = history.filter(h => h.outcome === 'WIN').length;
+    const losses = history.filter(h => h.outcome === 'LOSS').length;
+    const jackpots = history.filter(h => h.outcome === 'JACKPOT').length;
+    const rate = history.length > 0 ? Math.round((wins / history.length) * 100) : 0;
+
+    $('statWins').textContent = wins;
+    $('statLosses').textContent = losses;
+    $('statJackpots').textContent = jackpots;
+
+    const wr = $('winRateLabel');
+    wr.textContent = rate + '%';
+    wr.style.color = rate >= 50 ? 'var(--green)' : 'var(--red)';
+
+    $('statsCard').style.display = history.length > 0 ? '' : 'none';
+}
+
+function renderHistory() {
+    const list = $('historyList');
+    $('clearBtn').style.display = history.length > 0 ? '' : 'none';
+
+    if (history.length === 0) {
+        list.innerHTML = '<div class="empty-state">No predictions yet</div>';
+        return;
+    }
+
+    list.innerHTML = history.map(e => {
+        const color = e.outcome === 'WIN' ? 'var(--green)' : e.outcome === 'LOSS' ? 'var(--red)' : 'var(--yellow)';
+        const bg = e.outcome === 'WIN' ? 'rgba(46,204,113,0.12)' : e.outcome === 'LOSS' ? 'rgba(231,76,60,0.12)' : 'rgba(241,196,15,0.12)';
+        return `<div class="history-entry"><span class="info"><strong>${e.period}</strong> · ${e.prediction}</span><span class="history-badge" style="color:${color};background:${bg}">${e.outcome}</span></div>`;
+    }).join('');
+}
+
+function saveHistory() { localStorage.setItem('predictionHistory_v4', JSON.stringify(history)); }
+
+function clearHistory() {
+    vibrate();
+    if (confirm('Clear history?')) {
+        history = [];
+        localStorage.removeItem('predictionHistory_v4');
+        renderHistory();
+        updateStats();
+    }
+}
+
+// Init
+const saved = localStorage.getItem('predictionHistory_v4');
+if (saved) history = JSON.parse(saved);
+calcPeriod();
+setInterval(calcPeriod, 1000);
+renderHistory();
+updateStats();
+</script>
 </body>
 </html>
