@@ -1,425 +1,237 @@
-<!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Croma AI Oracle - Pro Edition</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>NOx AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-light: #f0f2f5; --card-light: #ffffff; --text-light: #1a202c; --text-secondary-light: #4a5568; --border-light: #e2e8f0;
-            --bg-dark: #131722; --card-dark: #1e222d; --text-dark: #e5e7eb; --text-secondary-dark: #9ca3af; --border-dark: #374151;
-            
-            --ai-gradient: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-            --wait-gradient: linear-gradient(135deg, #64748b 0%, #475569 100%);
-            --risk-low: #22c55e; --risk-medium: #f59e0b; --risk-high: #ef4444;
+            --background-dark: #0A091A; --card-background: rgba(28, 26, 58, 0.6); --primary-accent: #8A2BE2;
+            --text-light: #F0F0F8; --text-secondary: #A0A0B8; --text-green: #2ecc71; --text-red: #e74c3c;
+            --text-yellow: #f1c40f; --border-color: rgba(138, 43, 226, 0.2);
         }
-        html.light {
-            --bg: var(--bg-light); --card: var(--card-light); --text: var(--text-light);
-            --text-secondary: var(--text-secondary-light); --border: var(--border-light);
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        html, body { overscroll-behavior: none; }
+        body {
+            font-family: 'Poppins', sans-serif; display: flex; align-items: center; justify-content: flex-start; flex-direction: column;
+            background-color: var(--background-dark); margin: 0; color: var(--text-light); min-height: 100vh;
+            -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; padding: 20px; box-sizing: border-box;
         }
-        html.dark {
-            --bg: var(--bg-dark); --card: var(--card-dark); --text: var(--text-dark);
-            --text-secondary: var(--text-secondary-dark); --border: var(--border-dark);
+        .hidden { display: none !important; }
+        .container {
+            background: var(--card-background); backdrop-filter: blur(12px); border: 1px solid var(--border-color); padding: 25px; border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); text-align: center; width: 100%; max-width: 400px;
+            animation: fadeIn 0.6s ease-out; box-sizing: border-box; margin-bottom: 20px;
         }
-        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text); transition: background-color 0.3s ease, color 0.3s ease; }
-        .card { background-color: var(--card); border: 1px solid var(--border); transition: background-color 0.3s ease, border-color 0.3s ease; }
-        .gradient-text { background: var(--ai-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .wait-text { background: var(--wait-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        #countdown-circle { transition: stroke-dashoffset 0.2s linear; }
-        .trend-dot { transition: transform 0.3s ease, opacity 0.3s ease; }
-        #history-log > div { animation: slideIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-        @keyframes slideIn { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
-        /* Professional Toggle Switch */
-        .toggle-switch { position: relative; display: inline-block; width: 50px; height: 28px; }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #4b5563; transition: .4s; border-radius: 28px; }
-        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: #3b82f6; }
-        input:checked + .slider:before { transform: translateX(22px); }
+        h2 { font-size: 1.5em; font-weight: 700; margin: 0 0 25px 0; color: var(--text-light); letter-spacing: 1px; }
+        .input-field {
+            width: 100%; text-align: center; caret-color: var(--primary-accent);
+            background-color: var(--background-dark); border: 2px solid var(--border-color); color: var(--text-light);
+            padding: 12px; border-radius: 12px; font-size: 1em; margin-bottom: 15px; transition: all 0.2s; box-sizing: border-box;
+        }
+        .input-field:focus { outline: none; border-color: var(--primary-accent); box-shadow: 0 0 15px var(--primary-accent); }
+        .btn-glow {
+            width: 100%; font-size: 1.2em; font-weight: 700; color: white; border: none; border-radius: 12px; cursor: pointer;
+            margin-top: 10px; text-transform: uppercase; letter-spacing: 1.5px; padding: 16px 30px;
+            background: linear-gradient(45deg, var(--primary-accent), #A020F0);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5); transition: all 0.3s ease-out;
+        }
+        .btn-glow:hover:not(:disabled) { transform: translateY(-3px) scale(1.02); box-shadow: 0 0 30px rgba(138, 43, 226, 0.7); }
+        .btn-glow:disabled { background: #2a284d; color: #6a6a8a; cursor: not-allowed; box-shadow: none; transform: none; }
+        #upcomingPeriodDisplay { font-size: 1.1em; color: var(--text-secondary); margin-top: 25px; margin-bottom: 5px; font-weight: 600; letter-spacing: 1px; }
+        #predictionResultBox { font-size: 3.5em; font-weight: 700; color: var(--text-green); min-height: 60px; display: flex; align-items: center; justify-content: center; text-transform: uppercase; }
+        .win-loss-buttons { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .win-loss-buttons button { font-weight: 600; padding: 12px 10px; border-radius: 10px; color: white; border: none; cursor: pointer; transition: transform 0.2s; }
+        .win-loss-buttons button:hover { transform: translateY(-2px); }
+        .win { background-color: var(--text-green); }
+        .loss { background-color: var(--text-red); }
+        .jackpot { background: linear-gradient(45deg, #f1c40f, #e67e22); }
+        .history-list { max-height: 200px; overflow-y: auto; padding-right: 10px; }
+        .history-list::-webkit-scrollbar { width: 6px; }
+        .history-list::-webkit-scrollbar-track { background: transparent; }
+        .history-list::-webkit-scrollbar-thumb { background: var(--primary-accent); border-radius: 10px; }
+        .history-entry { background: transparent; padding: 12px 5px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
+        .history-entry:last-child { border-bottom: none; }
+        .history-outcome { text-shadow: 0 0 5px; font-size: 0.9em; padding: 4px 10px; border-radius: 8px; color: white; }
+        .grid { display: grid; }
+        .grid-cols-2 { grid-template-columns: 1fr 1fr; }
+        .gap-4 { gap: 16px; }
+        .mt-4 { margin-top: 16px; }
+        .mt-1 { margin-top: 4px; }
+        .mb-2 { margin-bottom: 8px; }
+        .mb-6 { margin-bottom: 24px; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .text-center { text-align: center; }
+        .font-bold { font-weight: 700; }
+        .text-xs { font-size: 0.75em; }
+        .text-sm { font-size: 0.875em; }
+        .text-lg { font-size: 1.125em; }
+        .text-xl { font-size: 1.25em; }
+        .text-5xl { font-size: 3em; }
+        .text-6xl { font-size: 3.75em; }
+        .w-full { width: 100%; }
+        .h-20 { height: 5rem; }
+        .p-0 { padding: 0; }
+        .p-4 { padding: 16px; }
+        .m-0 { margin: 0; }
+        .my-2 { margin-top: 8px; margin-bottom: 8px; }
+        .rounded-lg { border-radius: 8px; }
+        .rounded-xl { border-radius: 12px; }
+        .space-y-2 > * + * { margin-top: 8px; }
+        .bg-dark { background-color: var(--background-dark); }
+        .bg-black-20 { background-color: rgba(0,0,0,0.2); }
+        .text-accent { color: var(--primary-accent); }
+        .text-secondary { color: var(--text-secondary); }
+        .text-red { color: #f87171; }
+        .text-green { color: var(--text-green); }
     </style>
 </head>
-<body class="p-4 max-w-md mx-auto">
+<body>
 
-    <header class="flex justify-between items-center mb-4">
-        <h1 class="text-2xl font-bold gradient-text">CROMA ORACLE</h1>
-        <label class="toggle-switch">
-            <input type="checkbox" id="theme-toggle">
-            <span class="slider"></span>
-        </label>
-    </header>
-
-    <main class="space-y-4">
-        <!-- Countdown & Status -->
-        <div class="card rounded-2xl p-4 text-center relative">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                <svg class="transform -rotate-90" width="120" height="120" viewBox="0 0 120 120">
-                    <circle cx="60" cy="60" r="54" fill="none" stroke="var(--border)" stroke-width="8"/>
-                    <circle id="countdown-circle" cx="60" cy="60" r="54" fill="none" class="stroke-blue-500" stroke-width="8"
-                        stroke-linecap="round" stroke-dasharray="339.29" stroke-dashoffset="339.29"/>
-                </svg>
+    <div id="main-content">
+        <div class="container tool-container">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl m-0">NOx AI<span id="strategy-version" class="text-xs text-accent">(V1)</span></h2>
             </div>
-            <p id="period-display" class="font-bold text-lg">---</p>
-            <p id="countdown-display" class="font-black text-5xl">--</p>
-            <p id="engine-status" class="text-xs font-semibold text-gray-400 mt-1">Initializing...</p>
-        </div>
-
-        <!-- Verdict -->
-        <div class="card rounded-2xl p-6">
-            <div class="grid grid-cols-2 items-center">
-                <div id="verdict-container" class="text-center">
-                    <p class="text-xs font-semibold text-gray-400 tracking-widest">VERDICT</p>
-                    <p class="text-6xl font-black text-gray-300">---</p>
+            <div class="bg-black-20 p-4 rounded-xl">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="text-center">
+                        <div id="box1" class="w-full h-20 text-5xl flex items-center justify-center font-bold bg-dark rounded-lg">?</div>
+                        <p class="text-xs mt-1 text-secondary">Last Period</p>
+                    </div>
+                    <input type="number" id="box2" class="w-full h-20 text-5xl text-center font-bold bg-dark rounded-lg input-field p-0" oninput="this.value=this.value.slice(0,1)" placeholder="?">
                 </div>
-                <div class="text-center space-y-2 border-l border-dashed border-gray-500">
-                    <div>
-                        <p class="text-xs font-semibold text-gray-400 tracking-widest">CONFIDENCE</p>
-                        <p id="confidence-display" class="font-bold text-2xl text-gray-300">0%</p>
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div class="text-center">
+                        <div id="box3" class="w-full h-20 text-5xl flex items-center justify-center font-bold bg-dark rounded-lg">?</div>
+                        <p class="text-xs mt-1 text-secondary">Previous Period</p>
                     </div>
-                     <div>
-                        <p class="text-xs font-semibold text-gray-400 tracking-widest">RISK LEVEL</p>
-                        <p id="risk-display" class="font-bold text-lg uppercase text-gray-300">---</p>
-                    </div>
+                    <input type="number" id="box4" class="w-full h-20 text-5xl text-center font-bold bg-dark rounded-lg input-field p-0" oninput="this.value=this.value.slice(0,1)" placeholder="?">
                 </div>
             </div>
-            <div class="mt-4 pt-4 border-t border-dashed border-gray-500">
-                 <p class="text-xs text-center font-semibold text-gray-400 tracking-widest">RECOMMENDED STRATEGY</p>
-                 <p id="pattern-display" class="text-sm text-center font-medium mt-1">Awaiting first analysis...</p>
+            <button id="predictButton" class="btn-glow" onclick="predictResult()">PREDICT</button>
+            <div id="upcomingPeriodDisplay" class="text-lg text-secondary" style="margin-top:20px;font-weight:600"></div>
+            <div id="predictionResultBox" class="text-6xl font-bold text-green my-2" style="min-height:60px;display:flex;align-items:center;justify-content:center">---</div>
+            <div id="winLossButtons" class="win-loss-buttons hidden">
+                <button class="win" onclick="handleOutcome('win')">WIN</button>
+                <button class="loss" onclick="handleOutcome('loss')">LOSS</button>
+                <button class="jackpot" onclick="handleOutcome('jackpot')">JACKPOT</button>
             </div>
         </div>
 
-        <!-- Trend Analysis -->
-        <div class="card rounded-2xl p-4">
-            <p class="text-xs text-center font-semibold text-gray-400 tracking-widest mb-3">RECENT TREND</p>
-            <div id="trend-container" class="flex justify-center items-center gap-2 h-6">
-                <p class="text-sm text-gray-400">Loading history...</p>
+        <div class="container">
+            <div class="flex justify-between items-center mb-2">
+                <h3 class="text-lg font-bold" style="margin:0">History</h3>
+                <button id="clearHistoryBtn" class="text-xs text-red" style="background:none;border:none;cursor:pointer;color:#f87171" onclick="clearHist()">Clear</button>
             </div>
+            <div id="history-list" class="text-sm space-y-2 history-list"></div>
         </div>
+    </div>
 
-        <!-- Session Stats -->
-        <div class="card rounded-2xl p-4">
-            <p class="text-xs text-center font-semibold text-gray-400 tracking-widest mb-3">SESSION STATS</p>
-            <div class="grid grid-cols-4 gap-2 text-center">
-                <div><p id="stat-winrate" class="font-bold text-lg">0%</p><p class="text-xs text-gray-500">Win Rate</p></div>
-                <div><p id="stat-pl" class="font-bold text-lg">0</p><p class="text-xs text-gray-500">P/L</p></div>
-                <div><p id="stat-winstreak" class="font-bold text-lg">0</p><p class="text-xs text-gray-500">Streak</p></div>
-                <div><p id="stat-trades" class="font-bold text-lg">0</p><p class="text-xs text-gray-500">Trades</p></div>
-            </div>
-        </div>
-        
-        <!-- Prediction History -->
-        <div class="card rounded-2xl p-4">
-             <p class="text-xs text-center font-semibold text-gray-400 tracking-widest mb-3">PREDICTION LOG</p>
-             <div id="history-log" class="space-y-2 max-h-48 overflow-y-auto pr-2">
-                <!-- History items will be injected here -->
-             </div>
-        </div>
-    </main>
+    <script>
+        const BASE_PERIOD = 20260629100010437n;
+        const BASE_TIME_STRING = '2026-06-29T12:47:00.000+05:30';
+        const MAX_HISTORY_LENGTH = 20;
 
-<script type="module">
-    // --- CONFIGS & API ---
-    const API_URL = 'https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json';
-    const CORS_PROXIES = [
-        (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-        (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`
-    ];
-    const HISTORY_LIMIT = 50;
-    const PERIOD_DURATION = 30; // 30 seconds
+        const box1Display = document.getElementById('box1');
+        const box3Display = document.getElementById('box3');
+        const box2Input = document.getElementById('box2');
+        const box4Input = document.getElementById('box4');
+        const predictButton = document.getElementById('predictButton');
+        const upcomingPeriodDisplay = document.getElementById('upcomingPeriodDisplay');
+        const predictionResultBox = document.getElementById('predictionResultBox');
+        const winLossButtons = document.getElementById('winLossButtons');
+        const strategyVersionDisplay = document.getElementById('strategy-version');
+        const historyListDiv = document.getElementById('history-list');
 
-    // --- STATE MANAGEMENT ---
-    const state = {
-        theme: 'light',
-        appStatus: 'BOOTING',
-        lastPeriod: null,
-        apiHistory: [],
-        predictionLog: [],
-        countdown: PERIOD_DURATION,
-        stats: { wins: 0, losses: 0, waited: 0, winStreak: 0, pnl: 0 },
-        currentPrediction: null,
-        isFetching: false,
-    };
+        let currentStrategy = 'v1', currentPeriod = 0n, history = [], periodWhenPredictionWasMade = 0n;
 
-    // --- UI ELEMENTS ---
-    const ui = {
-        periodDisplay: document.getElementById('period-display'),
-        countdownDisplay: document.getElementById('countdown-display'),
-        countdownCircle: document.getElementById('countdown-circle'),
-        engineStatus: document.getElementById('engine-status'),
-        verdictContainer: document.getElementById('verdict-container'),
-        confidenceDisplay: document.getElementById('confidence-display'),
-        riskDisplay: document.getElementById('risk-display'),
-        patternDisplay: document.getElementById('pattern-display'),
-        trendContainer: document.getElementById('trend-container'),
-        statWinrate: document.getElementById('stat-winrate'),
-        statPl: document.getElementById('stat-pl'),
-        statWinstreak: document.getElementById('stat-winstreak'),
-        statTrades: document.getElementById('stat-trades'),
-        historyLog: document.getElementById('history-log'),
-        themeToggle: document.getElementById('theme-toggle'),
-    };
+        function vibrate(d = 40) { navigator.vibrate?.(d); }
 
-    // --- AUDIO ENGINE ---
-    const sounds = {
-        tick: new Tone.Synth({ oscillator: { type: 'sine' }, volume: -20, envelope: { attack: 0.001, decay: 0.05, sustain: 0, release: 0.1 } }).toDestination(),
-        predict: new Tone.MembraneSynth({ pitchDecay: 0.01, octaves: 2, volume: -10 }).toDestination(),
-        win: new Tone.PluckSynth({ attackNoise: 0.5, dampening: 4000, resonance: 0.9, volume: -5 }).toDestination(),
-        loss: new Tone.Synth({ oscillator: { type: 'fmsquare' }, volume: -15, envelope: { attack: 0.01, decay: 0.2, sustain: 0, release: 0.2 } }).toDestination(),
-    };
-    
-    function playSound(sound, note = "C4") {
-        Tone.start();
-        if (sounds[sound]) sounds[sound].triggerAttackRelease(note, "32n");
-    }
-
-    // --- ORACLE AI CORE ---
-    const getResultType = (numStr) => parseInt(numStr) >= 5 ? 'B' : 'S';
-    
-    const ORACLE_PATTERNS = [
-        { name: 'Strong Trend', confidence: 90, test: (r) => r[0] === r[1] && r[1] === r[2] && r[2] === r[3] ? r[0] : null },
-        { name: 'Reversal Echo', confidence: 85, test: (r) => r[0] !== r[1] && r[0] === r[2] ? r[1] : null },
-        { name: 'Double Break', confidence: 80, test: (r) => r[0] === r[1] && r[2] === r[3] && r[0] !== r[2] ? (r[0] === 'B' ? 'S' : 'B') : null },
-        { name: 'Triple Reversal', confidence: 75, test: (r) => r[0] === r[1] && r[1] === r[2] ? (r[0] === 'B' ? 'S' : 'B') : null },
-        { name: 'Alternating Flip', confidence: 70, test: (r) => r[0] !== r[1] && r[1] !== r[2] && r[2] !== r[3] ? r[3] : null },
-    ];
-
-    function generateVerdict(history) {
-        const results = history.map(item => getResultType(item.number));
-
-        for (const pattern of ORACLE_PATTERNS) {
-            const verdict = pattern.test(results);
-            if (verdict) {
-                const volatility = results.slice(0, 10).reduce((acc, val, i, arr) => i > 0 && val !== arr[i - 1] ? acc + 1 : acc, 0);
-                let riskLevel = 'Low';
-                if (pattern.confidence < 80 || volatility > 6) riskLevel = 'Medium';
-                if (pattern.confidence < 75 || volatility > 8) riskLevel = 'High';
-                
-                const validNumbers = verdict === 'B' ? [5,6,7,8,9] : [0,1,2,3,4];
-                const numFreq = validNumbers.map(n => ({ num: n, count: history.slice(0, 15).filter(h => parseInt(h.number) === n).length }));
-                numFreq.sort((a, b) => a.count - b.count);
-                const luckyNumber = numFreq[0].num;
-
-                return { verdict, luckyNumber, pattern: pattern.name, confidence: pattern.confidence, risk: riskLevel };
-            }
-        }
-        return { verdict: 'WAIT', pattern: 'Market Unclear', confidence: 0, risk: 'High' };
-    }
-
-    // --- DATA PROCESSING & STATE UPDATES ---
-    async function fetchWithCors(url) {
-        const urls = [url, ...CORS_PROXIES.map(p => p(url))];
-        let lastError;
-        for (const u of urls) {
-            try {
-                const response = await fetch(u);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const data = await response.json();
-                if (!data?.data?.list || data.data.list.length < 10) throw new Error('Invalid data');
-                return data;
-            } catch (error) { lastError = error; }
-        }
-        throw lastError;
-    }
-
-    async function mainFetchLoop() {
-        if (state.isFetching) return;
-        state.isFetching = true;
-        setEngineStatus('Connecting...');
-        try {
-            const data = await fetchWithCors(`${API_URL}?t=${Date.now()}`);
-            processNewData(data.data.list);
-            setEngineStatus('Monitoring...');
-        } catch (error) {
-            console.error("Fetch failed on all routes:", error);
-            setEngineStatus('Connection Error');
-        } finally {
-            state.isFetching = false;
-        }
-    }
-
-    function processNewData(history) {
-        const latestPeriod = history[0].issueNumber;
-        if (latestPeriod === state.lastPeriod) return;
-
-        state.lastPeriod = latestPeriod;
-        state.apiHistory = history;
-        const lastLog = state.predictionLog[0];
-        
-        if (lastLog && lastLog.status === 'pending') {
-            const actualResult = getResultType(history[0].number);
-            lastLog.actualResult = actualResult;
-            if (lastLog.verdict === 'WAIT') {
-                lastLog.status = 'waited';
-                state.stats.waited++;
-            } else if (lastLog.verdict === actualResult) {
-                lastLog.status = 'win';
-                state.stats.wins++;
-                state.stats.winStreak++;
-                state.stats.pnl++;
-                playSound('win', 'G5');
+        function updateUiWithPeriod(p) {
+            currentPeriod = p;
+            const pStr = String(p), prevPStr = String(p - 1n);
+            box1Display.textContent = pStr.slice(-1);
+            box3Display.textContent = prevPStr.slice(-1);
+            const newUpPeriod = String(p + 1n);
+            upcomingPeriodDisplay.textContent = "Next Period: " + newUpPeriod;
+            if (sessionStorage.getItem('predicted_period') !== newUpPeriod) {
+                predictButton.disabled = false; predictButton.textContent = "PREDICT";
             } else {
-                lastLog.status = 'loss';
-                state.stats.losses++;
-                state.stats.winStreak = 0;
-                state.stats.pnl--;
-                playSound('loss', 'C3');
+                predictButton.disabled = true; predictButton.textContent = "PREDICTED";
             }
         }
 
-        state.currentPrediction = generateVerdict(history);
-        const nextPeriod = (BigInt(latestPeriod) + 1n).toString();
-        
-        const newLogEntry = {
-            period: nextPeriod,
-            status: 'pending',
-            ...state.currentPrediction
-        };
-
-        state.predictionLog.unshift(newLogEntry);
-        if (state.predictionLog.length > HISTORY_LIMIT) state.predictionLog.pop();
-        
-        playSound('predict', 'C2');
-        renderAll();
-    }
-    
-    // --- RENDERING ---
-    function renderAll() {
-        renderVerdict();
-        renderStats();
-        renderTrend();
-        renderHistory();
-    }
-    
-    function renderVerdict() {
-        const p = state.currentPrediction;
-        if (!p) return;
-
-        ui.patternDisplay.textContent = p.pattern;
-        ui.confidenceDisplay.textContent = `${p.confidence}%`;
-        ui.confidenceDisplay.style.color = p.confidence > 0 ? 'var(--text)' : '#9ca3af';
-
-        const riskColors = { Low: 'var(--risk-low)', Medium: 'var(--risk-medium)', High: 'var(--risk-high)' };
-        ui.riskDisplay.textContent = p.risk;
-        ui.riskDisplay.style.color = riskColors[p.risk] || '#9ca3af';
-
-        if (p.verdict === 'WAIT') {
-            ui.verdictContainer.innerHTML = `
-                <p class="text-xs font-semibold text-gray-400 tracking-widest">VERDICT</p>
-                <p class="text-6xl font-black wait-text">WAIT</p>`;
-        } else {
-            ui.verdictContainer.innerHTML = `
-                <p class="text-xs font-semibold text-gray-400 tracking-widest">VERDICT</p>
-                <div class="flex items-end justify-center">
-                    <p class="text-7xl font-black gradient-text leading-none">${p.verdict}</p>
-                    <p class="text-3xl font-bold ml-2 mb-1">${p.luckyNumber}</p>
-                </div>`;
+        function calculateCurrentPeriod() {
+            const baseTime = new Date(BASE_TIME_STRING);
+            const currentTime = new Date();
+            const minutesPassed = Math.floor((currentTime.getTime() - baseTime.getTime()) / 60000);
+            const calculatedPeriod = BASE_PERIOD + BigInt(minutesPassed);
+            if (currentPeriod !== calculatedPeriod) updateUiWithPeriod(calculatedPeriod);
         }
-    }
-    
-    function renderStats() {
-        const { wins, losses, winStreak, pnl } = state.stats;
-        const trades = wins + losses;
-        ui.statTrades.textContent = trades;
-        ui.statWinrate.textContent = trades > 0 ? `${Math.round((wins / trades) * 100)}%` : '0%';
-        ui.statWinstreak.textContent = winStreak;
-        ui.statPl.textContent = `${pnl > 0 ? '+' : ''}${pnl}`;
-        ui.statPl.style.color = pnl > 0 ? 'var(--risk-low)' : pnl < 0 ? 'var(--risk-high)' : 'var(--text-secondary)';
-    }
 
-    function renderTrend() {
-        ui.trendContainer.innerHTML = '';
-        state.apiHistory.slice(0, 15).reverse().forEach((item, index) => {
-            const dot = document.createElement('div');
-            dot.className = 'trend-dot w-4 h-5 rounded-sm flex items-center justify-center text-white text-xs font-bold';
-            dot.style.backgroundColor = getResultType(item.number) === 'B' ? '#3b82f6' : '#ef4444';
-            dot.textContent = item.number;
-            dot.style.transform = `scale(${1 - (14-index)*0.03})`;
-            dot.style.opacity = `${1 - (14-index)*0.05}`;
-            ui.trendContainer.appendChild(dot);
-        });
-    }
-
-    function renderHistory() {
-        ui.historyLog.innerHTML = '';
-        const statusMap = {
-            win: { icon: 'fa-arrow-trend-up', color: 'text-green-500' },
-            loss: { icon: 'fa-arrow-trend-down', color: 'text-red-500' },
-            waited: { icon: 'fa-pause', color: 'text-yellow-500' },
-            pending: { icon: 'fa-hourglass-half', color: 'text-blue-500' }
-        };
-        state.predictionLog.slice(0, 10).forEach(log => {
-            const s = statusMap[log.status];
-            const div = document.createElement('div');
-            div.className = 'flex items-center justify-between text-sm p-2 rounded-lg';
-            div.innerHTML = `
-                <div class="flex items-center gap-3">
-                    <i class="fas ${s.icon} ${s.color} w-4 text-center"></i>
-                    <p class="font-bold">...${log.period.slice(-4)}</p>
-                    <p class="text-xs font-semibold px-2 py-0.5 rounded-full ${log.verdict === 'B' ? 'bg-blue-100 text-blue-800' : log.verdict === 'S' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'}">${log.verdict !== 'WAIT' ? `${log.verdict} / ${log.luckyNumber}` : 'WAIT'}</p>
-                </div>
-                <p class="font-semibold ${s.color}">${log.actualResult || '...'}</p>
-            `;
-            ui.historyLog.appendChild(div);
-        });
-    }
-    
-    // --- TIMER & MAIN LOOP ---
-    function setEngineStatus(status) {
-        state.appStatus = status;
-        ui.engineStatus.textContent = status;
-    }
-    
-    function countdownLoop() {
-        const seconds = new Date().getSeconds();
-        const newCountdown = PERIOD_DURATION - (seconds % PERIOD_DURATION) - 1;
-
-        if (newCountdown !== state.countdown) {
-            state.countdown = newCountdown;
-            ui.countdownDisplay.textContent = state.countdown;
-            
-            const progress = state.countdown / PERIOD_DURATION;
-            const dashOffset = 339.29 * (1 - progress);
-            ui.countdownCircle.style.strokeDashoffset = dashOffset;
-            
-            if (state.countdown <= 5 && state.countdown > 0) playSound('tick', 'C5');
-            
-            if (state.countdown === 28 || state.countdown === 2) { // Fetch near start and end of period
-                mainFetchLoop();
+        function predictResult() {
+            vibrate(70);
+            const b1 = parseInt(box1Display.textContent), b2 = parseInt(box2Input.value),
+                  b3 = parseInt(box3Display.textContent), b4 = parseInt(box4Input.value);
+            if ([b1, b2, b3, b4].some(isNaN)) { predictionResultBox.textContent = "- - -"; return; }
+            periodWhenPredictionWasMade = currentPeriod + 1n;
+            sessionStorage.setItem('predicted_period', String(periodWhenPredictionWasMade));
+            const reduce = n => { while (n >= 10) n = String(n).split('').reduce((s, d) => s + parseInt(d), 0); return n; };
+            const v1Digit = reduce(Math.abs(b1 - b2) + Math.abs(b3 - b4));
+            let predTxt = "";
+            if (currentStrategy === 'v1') {
+                predTxt = (v1Digit >= 5 ? "BIG " : "SMALL ") + v1Digit;
+            } else {
+                const isV1Big = v1Digit >= 5;
+                let v2Num = isV1Big ? (v1Digit % 2 !== 0 ? 2 : 3) : (v1Digit % 2 !== 0 ? 8 : 7);
+                predTxt = (isV1Big ? "SMALL " : "BIG ") + v2Num;
             }
+            predictionResultBox.textContent = predTxt;
+            box2Input.value = ''; box4Input.value = '';
+            predictButton.disabled = true; predictButton.textContent = "PREDICTED";
+            winLossButtons.classList.remove('hidden');
         }
-        
-        if (state.lastPeriod) {
-            const nextPeriod = (BigInt(state.lastPeriod) + 1n).toString();
-            ui.periodDisplay.textContent = `PERIOD ...${nextPeriod.slice(-4)}`;
+
+        function handleOutcome(o) {
+            vibrate();
+            const p = String(periodWhenPredictionWasMade);
+            history.unshift({ period: p.slice(-4), prediction: predictionResultBox.textContent, outcome: o.toUpperCase() });
+            if (history.length > MAX_HISTORY_LENGTH) history.pop();
+            saveHistory(); renderHistory();
+            if (o === 'loss') {
+                currentStrategy = currentStrategy === 'v1' ? 'v2' : 'v1';
+                strategyVersionDisplay.textContent = '(' + currentStrategy.toUpperCase() + ')';
+            }
+            winLossButtons.classList.add('hidden');
+            predictButton.textContent = "PREDICTED";
+            predictionResultBox.textContent = "---";
         }
-        requestAnimationFrame(countdownLoop);
-    }
-    
-    // --- INITIALIZATION ---
-    function initTheme() {
-        const savedTheme = localStorage.getItem('cromaTheme') || 'light';
-        state.theme = savedTheme;
-        document.documentElement.className = savedTheme;
-        ui.themeToggle.checked = savedTheme === 'dark';
 
-        ui.themeToggle.addEventListener('change', () => {
-            state.theme = ui.themeToggle.checked ? 'dark' : 'light';
-            document.documentElement.className = state.theme;
-            localStorage.setItem('cromaTheme', state.theme);
-        });
-    }
+        function renderHistory() {
+            historyListDiv.innerHTML = '';
+            if (history.length === 0) {
+                historyListDiv.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:16px 0">No result found</div>';
+                return;
+            }
+            history.forEach(e => {
+                const d = document.createElement('div'); d.className = 'history-entry';
+                const color = e.outcome === 'WIN' ? 'var(--text-green)' : e.outcome === 'LOSS' ? 'var(--text-red)' : 'var(--text-yellow)';
+                d.innerHTML = '<span>' + e.period + ' - ' + e.prediction + '</span><span class="history-outcome" style="color:' + color + '">' + e.outcome + '</span>';
+                historyListDiv.appendChild(d);
+            });
+        }
 
-    function init() {
-        initTheme();
-        countdownLoop();
-    }
+        function saveHistory() { localStorage.setItem('predictionHistory_v4', JSON.stringify(history)); }
+        function loadHistory() { const h = localStorage.getItem('predictionHistory_v4'); if (h) history = JSON.parse(h); renderHistory(); }
+        function clearHist() { vibrate(); if (confirm("Clear history?")) { history = []; localStorage.removeItem('predictionHistory_v4'); renderHistory(); } }
 
-    init();
-</script>
+        calculateCurrentPeriod();
+        setInterval(calculateCurrentPeriod, 1000);
+        loadHistory();
+    </script>
 </body>
 </html>
-
